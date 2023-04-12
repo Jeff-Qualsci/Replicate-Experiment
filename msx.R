@@ -69,7 +69,8 @@ ConCorrLabel <- paste("Concordance Correlation r =", format(ConCorr, digits = 3)
 # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
 
 UsrData <- UsrData %>% 
-  mutate(Outlier = MeasDiff > MSxStats$ULSA | MeasDiff < MSxStats$LLSA)
+  mutate(Outlier = MeasDiff > MSxStats$ULSA | MeasDiff < MSxStats$LLSA,
+         Label = if_else(Outlier, Sample, NA))
 
 # Generate MD Plot (Mean/Difference for MSD or Geometric Mean/Ratio for MSR) for report.
 
@@ -79,6 +80,7 @@ MDPlot <- if (Pot) {
   
   ggplot(UsrData, aes(x =  GeoMean, y = Ratio)) +
     geom_point(shape = UsrData$Outlier, size = 3) +
+    geom_text(aes(label = Label), na.rm = TRUE, hjust = -.5) +
     geom_hline(yintercept = 10 ^ MSxStats$MeanDiff, color = "mediumblue") +
     geom_hline(yintercept = 1, color = "black") +
     geom_hline(yintercept = 10 ^ MSxStats$UDL, color = "mediumblue", linetype = "dashed") +
@@ -101,6 +103,7 @@ MDPlot <- if (Pot) {
   
   ggplot(UsrData, aes(x = MeasMean, y = MeasDiff)) +
     geom_point(shape = UsrData$Outlier, size = 3) +
+    geom_text(aes(label = Label), na.rm = TRUE, hjust = -.5) +
     geom_hline(yintercept = MSxStats$MeanDiff, color = "mediumblue") +
     geom_hline(yintercept = 0, color = "black") +
     geom_hline(yintercept = MSxStats$UDL, color = "mediumblue", linetype = "dashed") +
@@ -127,6 +130,7 @@ ggsave(filename = 'Output/MDPlot.png', plot = MDPlot, height = 4, width = 6, uni
 
 R1R2Plot <- ggplot(UsrData,aes(x = Meas1, y = Meas2)) +
   geom_point() +
+  geom_text(aes(label = Label), na.rm = TRUE, hjust = -.5) +
   geom_smooth(method = "lm", se = TRUE, linetype = "dashed", linewidth = 2) +
   geom_abline(slope = 1) +
   labs(title = "Correlation Run 1 vs Run 2",
@@ -142,12 +146,12 @@ ggsave(filename = 'Output/CorrelationPlot.png', plot = R1R2Plot, height = 4, wid
 # Generate output data files for user
 
   RepExpData <- if(Pot) { UsrData %>% 
-      select(-Potency, -Meas1, -Meas2, -MeasDiff, -MeasMean) %>% 
-      rename(`Geometric Mean` = GeoMean, `Ratio (Run 1/Run 2`)
+      select(-Potency, -Meas1, -Meas2, -MeasDiff, -MeasMean, -Label) %>% 
+      rename(`Geometric Mean` = GeoMean, `Ratio (Run 1/Run 2` = Ratio)
     
 } else { UsrData %>% 
       select(-Potency, -Meas1, -Meas2, -GeoMean, -Ratio) %>% 
-      rename(Mean = MeasMean, Difference = MeasDiff)
+      rename(Mean = MeasMean, Difference = MeasDiff, -Label)
   
 }
   
