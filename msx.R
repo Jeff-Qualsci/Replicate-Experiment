@@ -107,7 +107,7 @@ MDPlot <- if (Pot) {
     geom_hline(yintercept = MSxStats$MeanDiff, color = "mediumblue") +
     geom_hline(yintercept = 0, color = "black") +
     geom_hline(yintercept = MSxStats$UDL, color = "mediumblue", linetype = "dashed") +
-    geom_text(x = 1, y = RepExpStats$UDL, label = "Upper Difference Limit", color = "mediumblue", vjust = -0.3) +
+    geom_text(x = 1, y = MSxStats$UDL, label = "Upper Difference Limit", color = "mediumblue", vjust = -0.3) +
     geom_hline(yintercept = MSxStats$LDL, color = "mediumblue", linetype = "dashed") +
     geom_text(x = 1, y = MSxStats$LDL, label = "Lower Difference Limit", color = "mediumblue", vjust = 1) +
     geom_hline(yintercept = MSxStats$ULSA, color = "#D55E00", linetype = "dotdash") +
