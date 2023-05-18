@@ -57,7 +57,7 @@ MSxStats <- UsrData %>%
             t = qt(0.975, n - 1),
             MeanDiff = mean(MeasDiff),
             StdDev = sd(MeasDiff),
-            MSx = 2 * sqrt(2) * StdDev,
+            MSx = 2 * sqrt(2) * StdDev/sqrt(2),
             UDL = MeanDiff + (t * StdDev/sqrt(n)),
             LDL = MeanDiff - (t * StdDev/sqrt(n)),
             ULSA = MeanDiff + (t * StdDev),
