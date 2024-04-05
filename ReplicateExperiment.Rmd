@@ -65,14 +65,16 @@ Fortunately all of this analysis can be done with the Replicate-Experiment web t
 
 library(tidyverse)
 library(patchwork)
+library(ggrepel)
 
 # Test data generation functions ---------------------------------------
 set.seed(12252023) #For reproducible examples 
 
 # Generate Potency test data for Replicate Experiment
-msr_data <- function(SmplNum, TstMSR, Shift = 0) {
+msr_data <- function(SmplNum, TstMSR, Shift = 1) {
   
-  TstSD <- log10(TstMSR) / (2 * sqrt(2))
+  TstSD <- log10(TstMSR) / 2
+  Shift <- log10(Shift)
   Sample <- sample(c(1000000 : 9999999), SmplNum)
   TrueMeas <- runif(SmplNum, -3, 3)
   ExpData <- map(TrueMeas, \(m) rnorm(2, m, TstSD))
@@ -84,13 +86,26 @@ msr_data <- function(SmplNum, TstMSR, Shift = 0) {
            across(-Sample, ~ 10 ^ .x))
 }
 
-# Generate Efficacy test data for Replicate Experiment
+# Generate Efficacy test data for Replicate Experiment- consistent SD
 msd_data <- function(SmplNum, TstMSD, Shift = 0) {
   
-  TstSD <- TstMSD /(2 * sqrt(2))
+  TstSD <- TstMSD /2
   Sample <- sample(c(1000000 : 9999999), SmplNum)
   TrueMeas <- runif(SmplNum, -20, 120)
   ExpData <- map(TrueMeas, \(m) rnorm(2, m, TstSD))
+  
+  TstData <- tibble(Sample, ExpData) %>% 
+    unnest_wider(col = ExpData, names_sep = '_') %>% 
+    rename(Exp1 = ExpData_1, Exp2 = ExpData_2) %>% 
+    mutate(Exp2 = Exp2 + Shift)
+}
+
+# Generate Efficacy test data for Replicate Experiment - consistent cv
+msd_cv_data <- function(SmplNum, cv, Shift = 0) {
+
+  Sample <- sample(c(1000000 : 9999999), SmplNum)
+  TrueMeas <- runif(SmplNum, -10, 110)
+  ExpData <- map(TrueMeas, \(m) rnorm(2, m, abs(cv*m)))
   
   TstData <- tibble(Sample, ExpData) %>% 
     unnest_wider(col = ExpData, names_sep = '_') %>% 
@@ -158,7 +173,6 @@ conc.corr <- function(x, y, alpha = 0.05)
   list(rho = rho, lowlim = lowlim, upplim = upplim)
 }
 
-
 # Replicate-Experiment Analysis Functions -------------------------------
 
 # Summary Stats
@@ -213,13 +227,13 @@ mrplot <- function(Data, Stats) {
     geom_hline(yintercept = Stats$MeanRatio, color = "mediumblue") +
     geom_hline(yintercept = 1, color = "black") +
     geom_hline(yintercept = Stats$UDL, color = "mediumblue", linetype = "dashed") +
-    geom_text(x = 1, y = Stats$UDL, label = "Upper Ratio Limit", color = "mediumblue", vjust = -0.3) +
+    geom_text(x = 1, y = log10(Stats$UDL), label = "Upper Ratio Limit", color = "mediumblue", vjust = -0.3) +
     geom_hline(yintercept = Stats$LDL, color = "mediumblue", linetype = "dashed") +
-    geom_text(x = 1, y = Stats$LDL, label = "Lower Ratio Limit", color = "mediumblue", vjust = 1) +
+    geom_text(x = 1, y = log10(Stats$LDL), label = "Lower Ratio Limit", color = "mediumblue", vjust = 1) +
     geom_hline(yintercept = Stats$ULSA, color = "#D55E00", linetype = "dotdash") +
-    geom_text(x = 1, y = Stats$ULSA, label = "Upper Limit of Aggreement", color = "#D55E00", vjust = -0.3) +
+    geom_text(x = 1, y = log10(Stats$ULSA), label = "Upper Limit of Aggreement", color = "#D55E00", vjust = -0.3) +
     geom_hline(yintercept = Stats$LLSA, color = "#D55E00", linetype = "dotdash") + 
-    geom_text(x = 1, y = Stats$LLSA, label = "Lower Limit of Aggreement", color = "#D55E00", vjust = 1) +
+    geom_text(x = 1, y = log10(Stats$LLSA), label = "Lower Limit of Aggreement", color = "#D55E00", vjust = 1) +
     theme_minimal() +
     scale_x_continuous(trans='log10') + 
     scale_y_continuous(trans='log10') +
@@ -236,12 +250,11 @@ r1r2plot <- function(Data, Stats) {
     geom_text(aes(label = Label), na.rm = TRUE, hjust = -.5) +
     geom_smooth(method = "lm", se = TRUE, linetype = "dashed", linewidth = 2) +
     geom_abline(slope = 1) +
-    labs(title = "Correlation Run 1 vs Run 2",
+    labs(title = "Correlation Exp1 vs Exp2",
          subtitle = paste("Concordance Correlation r =", Stats$r),
-         x = "Run 1",
-         y = "Run2") +
+         x = "Exp1",
+         y = "Exp2") +
     theme_minimal()
-  
 }
 
 #Replicate-Experiment Efficacy --------------------------------------------
@@ -290,7 +303,9 @@ repexp.potency <- function(df) {
   
   RepExp_Stats <- RepExp_Stats %>% 
     rename(MSR = MSD,
-           MeanRatio = MeanDiff) %>% 
+           MeanRatio = MeanDiff,
+           URL = UDL,
+           LRL = LDL) %>% 
     mutate(across(-c(1, 8), ~10 ^ .x),
            across(-c(1), \(x) signif(x, digits = 3)))
   
@@ -302,9 +317,6 @@ repexp.potency <- function(df) {
   
   list(Data = RepExp_Data, Stats = RepExp_Stats, MRPlot = MeanRatioPlot, CorrPlot = R1R2CorrelationPlot)
 }
-  
-
-
 ```
 
 ## Scenarios
@@ -352,7 +364,7 @@ Efficacy320MSD$MDPlot
 
 A correlation plot of the two data sets is also generated.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE}
 Efficacy320MSD$CorrPlot
 ```
 
@@ -363,4 +375,77 @@ Data <- Efficacy320MSD$Data %>%
   arrange(Label) %>% 
   select(-Label)
 Data
+```
+
+### Efficacy - Variability differences across assay range.
+
+The variability of assay efficacy measurements may differ significantly across the dynamic range of the assay. Consider an assay that has a consistent cv (10%) across the range of activity measurements. That might produce the following results
+
+```{r echo=FALSE, message=FALSE}
+
+EfficacycvData <- msd_cv_data(SmplNum = 320, cv = 0.1)
+EfficacycvMSD <- repexp.efficacy(EfficacycvData)
+
+EfficacycvMSD$Stats
+EfficacycvMSD$MDPlot
+EfficacycvMSD$CorrPlot
+
+```
+
+Both the Mean-Difference and Correlation plots show more variability in the data as a function if increasing activity. In the case of a signal decrease assay the variability would be increased at lower % activity levels. Assays which show this behavior should not use the replicate experiment as a general measurement of uncertainty in the assay. However Replicate-Experiments with the vehicle and active controls analyzed separately can be useful that the assay is repeatable and helping to define limits for activity. In fact, the numerator in the Z' equation is the difference between the Limits of Agreement for the two controls.
+
+$$
+Z' = \frac{(\overline{Max} - 3 * sd_{Max})-(\overline{Min} + 3 * sd_{Min})}{\overline{Max} - \overline{Min}}
+$$
+
+### Potency
+
+As discussed in the Data Analysis section, potency measurements must be converted to their log~10~ values for the statistical analysis, so that the variability will be normally distributed. However this conversion and the antilog back to the linear scale do affect the interpretation of the data. Since $log(A) - log(B) = log(A/B)$, the differences from the statistical analysis become ratios when converted back to the linear scale. Thus uncertainties and confidence limits for potency values should be interpreted as fold-differences from the measured value. Additionally, since any units of measure will cancel out in the ratio, they are consistent across the measurement range, unlike efficacy measurements.
+
+Consider the following data set with 32 compounds with a range of potencies. The dose response plates are prepared and tested in 2 independent experiments, as with the efficacy experiment, but now the potency values (e.g. AC~50~) are compared.
+
+```{r echo=FALSE}
+Pot32Data <- msr_data(32, 3)
+Pot32MSR <- repexp.potency(Pot32Data)
+Pot32Data <- Pot32Data %>% 
+  mutate(across(-Sample, \(x) signif(x, digits = 3)))
+Pot32Data
+```
+
+Now, when the analysis is run, the data are returned with the geometric mean estimating the true potency and the ratio of the potencies as a measure of the variability in the measurements.
+
+```{r echo=FALSE}
+Pot32MSR$Data
+```
+
+Similarly, the statistics now use ratios for the uncertainty measurements. The Mean Ratio should be close to 1 if there is no significant *between-run* variability. The Mean Ratio limits represent the SEM for the Mean Ratio. The Upper and Lower Aggreement Limits are ratios representing 99% confidence intervals. The correlation coefficient, r, is also provided.
+
+```{r echo=FALSE}
+Pot32MSR$Stats
+```
+
+The Mean-Ratio plot is equivalent to the Mean-Difference plot for efficacy data and is interpreted similarly. The geometric mean potency is plotted on the x-axis and the ratio values on the y-axis with log10 scales. Ideally the x-axis values should cover at least 3 logs or the full range of available potencies. The ratio values should be evenly distributed across the Mean Ratio line.
+
+```{r echo=FALSE}
+Pot32MSR$MRPlot
+```
+
+The Correlation plot uses the x-axis for the first experiment and the y-axis for the second experiment with log scales. A reference line indicating unity along with the correlation line and correlation coefficient.
+
+```{r echo=FALSE, message=FALSE}
+Pot32MSR$CorrPlot
+```
+
+### Mean Ratio or Mean Difference Shift
+
+The Mean Ratio and Mean Difference can reveal systematic differences between the two experiments. If the differences in the assay measurements are random, then the Mean Ratio should be equal or close to 1 and the Mean Difference should be equal of close to 0. If the ratio/dose limits do not include those values, that is a strong indication that there is a cause for the difference. This cause may be something obvious (e.g. such as different assayers, reagent lots, instruments, ...) or they may require some investigation (cell line drift, instrument settings or calibration, ...).
+
+```{r echo=FALSE, message=FALSE}
+PotShiftData <- msr_data(SmplNum = 32, TstMSR = 2.7, Shift = 1.5)
+PotShiftMSR <- repexp.potency(PotShiftData)
+PotShiftMSR$Data
+PotShiftMSR$Stats
+PotShiftMSR$MRPlot
+PotShiftMSR$CorrPlot
+
 ```
