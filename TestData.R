@@ -1,7 +1,7 @@
 # Create test data for replicate experiment AGM webtool
 
 library(tidyverse)
-setSessionTimeLimit(12252023) #For reproducible examples 
+# set.seed(12252023) #For reproducible examples 
 
 # Generate Potency test data for Replicate Experiment
 msr_data <- function(SmplNum, TstMSR, Shift = 0) {
@@ -96,3 +96,10 @@ write_csv(MSR3data32, file = 'Data/MSR3data32.csv')
 
 MSR3data32shift <- msr_data(SmplNum = 32, TstMSR = 3, Shift = 0.3)
 write_csv(MSR3data32shift, file = 'Data/MSR3data32shift.csv')
+
+# Standard MSD with 320 samples MSD = 20
+
+MSD20Data320 <- msd_data(SmplNum = 320, TstMSD = 20, Shift = 0)
+
+
+

@@ -279,16 +279,16 @@ repexp.save <- function(report, path) {
 # Replicate-Experiment Example Analysis ------------------------------
 
 # UsrData <- msd_data(320, 20)
-# 
-# MSD_320_20 <- repexp.efficacy(UsrData)
-#
-# repexp.save(report = MSD_320_20, path = MSD20)
-# 
-# UsrData <- msr_data(40, 3)
-# 
-# MSR_40_3 <- repexp.potency(UsrData)
-#
-# repexp.save(report = MSR_40_3, path = MSR3)
 
-# MSD_320_CV10 <- msd_cv_data(SmplNum = 320, cv = 0.1)
-# write_csv(MSD_320_CV10, file = 'Data/MSD_320_CV10.csv')
+MSD_320_20 <- repexp.efficacy(UsrData)
+
+repexp.save(report = MSD_320_20, path = MSD20)
+
+UsrData <- msr_data(40, 3)
+
+MSR_40_3 <- repexp.potency(UsrData)
+
+repexp.save(report = MSR_40_3, path = MSR3)
+
+MSD_320_CV10 <- msd_cv_data(SmplNum = 320, cv = 0.1)
+write_csv(MSD_320_CV10, file = 'Data/MSD_320_CV10.csv')
