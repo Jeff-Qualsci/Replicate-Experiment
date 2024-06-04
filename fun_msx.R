@@ -77,56 +77,25 @@ msd_act <- function(SmplNum, TstMSD, Shift = 0) {
       mutate(Exp2 = Exp2 + Shift)
   }
   
-# Concordance Correlation V. Devanarayan --------------------------------
-conc.corr <- function(x, y, alpha = 0.05)
-  {
-    qval <- qnorm(1. - alpha/2.)
-    N <- length(x)
-    lm.xy <- lm(y ~ x)
-    Intercept <- c(lm.xy$coeff[1.])
-    Slope <- c(lm.xy$coeff[2.])
-    A <- 2. * Slope * var(x)
-    B <- var(y) + var(x)
-    C <- (Intercept + (Slope - 1.) * (mean(x)))^2.
-    rho <- A/(B + C)
-    U <- (mean(x) - mean(y))^2./(sqrt(var(x)) * sqrt(var(y)))
-    # cat("Zhat = ",Zhat,"\n")
-    # cat("D=",D,"\n")
-    # cat("E=",E,"\n")
-    Zhat <- 0.5 * logb((1. + rho)/(1. - rho))
-    D <- (4. * rho^3. * (1. - rho) * U)/(rho * (1. - rho^2.)^2.)
-    E <- (2. * rho^4. * U^2.)/(rho^2. * (1. - rho^2.)^2.)
-    # cat("var.Zhat=",var.Zhat,"\n")
-    var.Zhat <- 1./(N - 2.) * (D - E)
-    lowlim <- Zhat - qval * sqrt(var.Zhat)
-    # cat(lowlim,upplim,"\n")
-    # Now transform back:
-    upplim <- Zhat + qval * sqrt(var.Zhat)
-    lowlim <- (exp(2. * lowlim) - 1.)/(1. + exp(2. * lowlim))
-    upplim <- (exp(2. * upplim) - 1.)/(1. + exp(2. * upplim))
-    lowlim <- max(lowlim, -1.)
-    upplim <- min(upplim, 1.)
-    list(rho = rho, lowlim = lowlim, upplim = upplim)
-  }
-  
+
 # Replicate-Experiment Analysis Functions -------------------------------
 
 # Summary Stats
 repexp.stats <- function(df) {
-    ConcCorr <- conc.corr(df$Exp1, df$Exp2)
-    rho <- as.double(ConcCorr[1])  
+    rSpearman <- cor(x = df$Exp1, y = df$Exp2, method = 'spearman')  
     
     summarise(df,
               n = n(), 
               t = qt(0.975, n - 1),
               MeanDiff = mean(Difference),
               StdDev = sd(Difference),
-              MSD = 2 * StdDev,
+              MSD = 2 * t * StdDev,
               UDL = MeanDiff + (t * StdDev/sqrt(n)),
               LDL = MeanDiff - (t * StdDev/sqrt(n)),
               ULSA = MeanDiff + (3 * StdDev),
               LLSA = MeanDiff- (3 * StdDev)) %>% 
-      mutate(r = rho) %>% 
+      mutate(r = rSpearman,
+             r2 = r ^ 2) %>% 
       select(-t, -StdDev)
   }
   
@@ -245,7 +214,7 @@ repexp.efficacy<- function(df) {
              MeanRatio = MeanDiff,
              URL = UDL,
              LRL = LDL) %>% 
-      mutate(across(-c(1, 8), ~10 ^ .x),
+      mutate(across(-c(1, 8, 9), ~10 ^ .x),
              across(-c(1), \(x) signif(x, digits = 3)))
     
     MeanRatioPlot <- mrplot(RepExp_Data, RepExp_Stats)
@@ -278,17 +247,6 @@ repexp.save <- function(report, path) {
 }
 # Replicate-Experiment Example Analysis ------------------------------
 
-# UsrData <- msd_data(320, 20)
+UsrData <- read_csv('Data/MSR3data32.csv')
 
-MSD_320_20 <- repexp.efficacy(UsrData)
-
-repexp.save(report = MSD_320_20, path = MSD20)
-
-UsrData <- msr_data(40, 3)
-
-MSR_40_3 <- repexp.potency(UsrData)
-
-repexp.save(report = MSR_40_3, path = MSR3)
-
-MSD_320_CV10 <- msd_cv_data(SmplNum = 320, cv = 0.1)
-write_csv(MSD_320_CV10, file = 'Data/MSD_320_CV10.csv')
+MSR_3_Report <- repexp.potency(UsrData)
