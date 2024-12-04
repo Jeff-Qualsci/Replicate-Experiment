@@ -2,11 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
-/ReplicateExperimet_siles
-ReplicateExperiment.html
-ReplicateExperiment.pdf
-/Data
+
+
 /Output
-AGM_Presentation.R
-*.png
-WebTools_mtg_data.R
+# html files
+RepExpDoc.html
+RepExpDoc_files/
