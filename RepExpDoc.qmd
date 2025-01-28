@@ -76,9 +76,9 @@ The statistical analysis assumes that any measurement errors are normally distri
 
 3.  Calculate the difference limits $DLs = \bar{d}\pm2sd/\sqrt{n}$ Where n is the number of compounds tested. This is the 95% confidence interval for the mean difference.
 
-4.  Calculate limits of aggrement $LSAs = \bar{d}\pm2sd$ Most of the compound differences (\~95%) should fall within these limits.
+4.  Calculate limits of agreement $LSAs = \bar{d}\pm2sd$ Most of the compound differences (\~95%) should fall within these limits.
 
-5.  Samples outside the aggrement limits are flagged as outliers.
+5.  Samples outside the agreement limits are flagged as outliers.
 
 6.  Calculate the Minimum Significant Difference $MSD = 2sd$ This is the minimum difference between two compounds that is statistically significant.
 
@@ -134,7 +134,7 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
 
 ```
 
-@fig-diffdist illustrates that distribution of difference values along with the associated analysis statistics. The difference limits are derived from the standard error of the mean (SEM) and represent a 95% CI around the mean difference. If the difference limits include 0, then there is no discernable systematic bias between the first and second measurement. The limits of statistical agreement (LSA) are the mean $\pm$ 2 standard deviations (95% CI) (green area). If a measurement difference is within 2 standard deviations of 0, then it is not significantly different from 0 and the measurements are considered to agree. **Note: As the number of samples increases, a few samples may fall outside the LSA due to random variation, especially if they are just outside of the LSA. If outliers are to be excluded, start with the most extreme differences. Only obvious outliers or those with an assignable cause should be removed.**
+@fig-diffdist illustrates that distribution of difference values along with the associated analysis statistics. The difference limits are derived from the standard error of the mean (SEM) and represent a 95% CI around the mean difference. If the difference limits include 0, then there is no discernible systematic bias between the first and second measurement. The limits of statistical agreement (LSA) are the mean $\pm$ 2 standard deviations (95% CI) (green area). If a measurement difference is within 2 standard deviations of 0, then it is not significantly different from 0 and the measurements are considered to agree. **Note: As the number of samples increases, a few samples may fall outside the LSA due to random variation, especially if they are just outside of the LSA. If outliers are to be excluded, start with the most extreme differences. Only obvious outliers or those with an assignable cause should be removed.**
 
 ### Variability of Data Sets
 
@@ -142,7 +142,7 @@ The two most common types of data reported from *in vitro* bioassays are efficac
 
 #### Efficacy
 
-**Efficacy** measures the magnitude of an **effect** at a given concentration and is usually what is directly measured in an assay well. The variability is efficacy measurements is normally distributed at given concentartion, though this variability may change across the dynamic range of the assay. There are two primary factors that can contribute to this. The first is the detection method. For example fluorescence intensity often exhibity a constant coefficient of variation (cv) across the dynamic range, the variability of ratiometric fluorescence polarization measurements is more constant. Second the sigmoidal nature of most dose response curves means that the variability of individual efficacy measurements will be greatest around the inflection point in the curve, due to the effect that small differences in sample concentration can exhibit. While it is difficult to predict the overall effect in advance, the replicate experiment with samples across the full dynamic range of the assay should indicate whether the data can be treated as a single population or should be divided into more discrete populations (e.g. inactive, moderatly active, highly active).
+**Efficacy** measures the magnitude of an **effect** at a given concentration and is usually what is directly measured in an assay well. The variability is efficacy measurements is normally distributed at given concentration, though this variability may change across the dynamic range of the assay. There are two primary factors that can contribute to this. The first is the detection method. For example fluorescence intensity often exhibit a constant coefficient of variation (cv) across the dynamic range, the variability of ratiometric fluorescence polarization measurements is more constant. Second the sigmoidal nature of most dose response curves means that the variability of individual efficacy measurements will be greatest around the inflection point in the curve, due to the effect that small differences in sample concentration can exhibit. While it is difficult to predict the overall effect in advance, the replicate experiment with samples across the full dynamic range of the assay should indicate whether the data can be treated as a single population or should be divided into more discrete populations (e.g. inactive, moderately active, highly active).
 
 #### Potency Data {#sec-potency-data}
 
@@ -195,7 +195,7 @@ logNormFig
 
 ```
 
-A simulated data set of 10,000 potency measurements of compound with a potency of 100 nM was used to illustrate some of the properties of log-normal data. @fig-logNormPlot shows several views of the data distribution. Panel A represents the original data values plotted on a linear axis. Panel B is the log~10~ transformed potency data and exhibits the expected normal distribution centered on 2 (log~10~(100) = 2). Panel C is. the original data plotted with log~10~ transformed axis which now appears to be normally distributed. Transforming the axis spacing for log-normal data facilitates visualiation of the variability in the data. The true potency of 100 is the geometric mean of the data set and would represent the median in the distribution of the original data. Note that the peak of the original data is less than the geometric mean, since the data is right skewed. Similarly this skew will result in arithmetic means do not represent the midpoint of the distribution.
+A simulated data set of 10,000 potency measurements of compound with a potency of 100 nM was used to illustrate some of the properties of log-normal data. @fig-logNormPlot shows several views of the data distribution. Panel A represents the original data values plotted on a linear axis. Panel B is the log~10~ transformed potency data and exhibits the expected normal distribution centered on 2 (log~10~(100) = 2). Panel C is. the original data plotted with log~10~ transformed axis which now appears to be normally distributed. Transforming the axis spacing for log-normal data facilitates visualization of the variability in the data. The true potency of 100 is the geometric mean of the data set and would represent the median in the distribution of the original data. Note that the peak of the original data is less than the geometric mean, since the data is right skewed. Similarly this skew will result in arithmetic means do not represent the midpoint of the distribution.
 
 This log-normal data distribution means that the data analysis must be performed on log(Potency) data as described in @sec-data_analysis. This ensures that the differences will be normally distributed as shown in @fig-diffdist. These are then converted back to the linear scale for reporting, so differences are transformed to ratios and a difference of 0 becomes a ratio of 1. These transformed values are also log-normal so the axis scales are log transformed for graphing. **Note: If potency has already been transformed into a log scale (eg. pK~a~ or log(IC~50~) it can be analyzed in the [Replicate-Experiment web tool](https://agm.ncats.nih.gov/app/) with the Efficacy setting.**
 
@@ -427,11 +427,11 @@ potCalcData <- read_csv('Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.29397
 potCalcData
 ```
 
-Once the data have been uploaded, the replicate experiment calculations are displayed. This data now includes the GeometricMean and Ratio values as well as Class, in addition to the original data. The GeoMean is the geometric mean of the potency values and the Ratio is the transformation of the difference from the statistical analysis. Recall that $log(A) - log(B) = log(A/B)$, so the difference between 2 log values becomes a ratio, when anti-logged. Similarly the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis and download. Calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
+Once the data have been uploaded, the replicate experiment calculations are displayed. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The GeoMean is the geometric mean of the potency values and the Ratio is the transformation of the difference from the statistical analysis. Recall that $log(A) - log(B) = log(A/B)$, so the difference between 2 log values becomes a ratio, when anti-logged. Similarly the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis and download. Calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
 
 ![Mean-Ratio plot of potency data.](Webtool%20Output/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_MSRFig_2024-10-28%2013_02_38.772112.png){#fig-potMD}
 
-The Bland-Altman plot for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies is represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around 1 with about half of the data on either side of the center. The variability also is evenly distributed across the range of x valus
+The Bland-Altman plot for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies is represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around 1 with about half of the data on either side of the center. The variability also is evenly distributed across the range of x values
 
 ```{r}
 #| label: tbl-potStats
@@ -471,7 +471,7 @@ fewSmplStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.6994
 fewSmplStats
 ```
 
-@tbl-fewSmplStats shows the associated statistics. While the MSR appears to be high we also see that n is only 5, so there is probalbly not enough data to provide a good estimate of the MSR.
+@tbl-fewSmplStats shows the associated statistics. While the MSR appears to be high we also see that n is only 5, so there is probably not enough data to provide a good estimate of the MSR.
 
 ![Correlation Plot](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_CorrFig_2024-10-28%2013_04_13.22479.png){#fig-fewCorr}
 
