@@ -97,9 +97,9 @@ repexp.stats <- function(df) {
       mutate(r = rSpearman,
              r2 = r ^ 2) %>% 
       select(-t, -StdDev)
-  }
-  
-#Mean Difference Plot
+}
+
+# Mean Difference Plot
 mdplot <- function(Data, Stats) {
     MSDLabel <- paste("MSD =", format(Stats$MSD, digits = 2))
     
@@ -217,6 +217,13 @@ repexp.efficacy<- function(df) {
       mutate(across(-c(1, 8, 9), ~10 ^ .x),
              across(-c(1), \(x) signif(x, digits = 3)))
     
+    # MSRn Table
+    n <- c(1:8)
+    MSRn <- 10^(log10(RepExp_Stats$MSR)/sqrt(n))
+    
+    MSRnTbl <- tibble(n, MSRn) %>% 
+      pivot_wider(names_from = n, names_prefix = 'n = ', values_from = MSRn)
+    
     MeanRatioPlot <- mrplot(RepExp_Data, RepExp_Stats)
     
     R1R2CorrelationPlot <- r1r2plot(RepExp_Data,RepExp_Stats) +
@@ -245,8 +252,9 @@ repexp.save <- function(report, path) {
   
   ggsave(filename = paste(reportDir, 'CorrPlot.png',sep = '/'), plot = report$CorrPlot, height = 4, width = 4, units = 'in')
 }
+
 # Replicate-Experiment Example Analysis ------------------------------
 
-UsrData <- read_csv('Data/MSR3data32.csv')
+UsrData <- read_csv('Data/MSR3data32shift.csv')
 
-MSR_3_Report <- repexp.potency(UsrData)
+MSR_2.5_Shift_Report <- repexp.potency(UsrData)

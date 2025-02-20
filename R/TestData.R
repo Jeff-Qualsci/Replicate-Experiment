@@ -92,7 +92,7 @@ write.csv(ScrnMSDdata, file = 'Data/ScrnMSD.csv')
 MSR3data32 <- msr_data(SmplNum = 32, TstMSR = 3)
 write_csv(MSR3data32, file = 'Data/MSR3data32.csv')
 
-# MSR 32 samples MSR = 3 Shift = 0.3
+# MSR 32 samples MSR = 2.5 Shift = 0.4
 
 MSR3data32shift <- msr_data(SmplNum = 32, TstMSR = 3, Shift = 0.3)
 write_csv(MSR3data32shift, file = 'Data/MSR3data32shift.csv')
