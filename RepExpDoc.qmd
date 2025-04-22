@@ -28,11 +28,11 @@ source('R/fun_msx.R')
 
 Statistical process control (SPC) is the use of statistical methods to monitor and control the quality of processes. Though the tools were initially developed and used for manufacturing, they have found applications in many other areas where outcomes can be measured and quality is valued, including scientific laboratories. Some of the most common SPC tools include Run Charts, Control Charts, Experimental Design, and Replicate Experiment.
 
-The Replicate-Experiment[@eastwood2006] is based on Bland-Altman difference analysis[@bland1986] between two sets of measurements and is used to assess either **repeatability** or **reproducibility**. These terms have specific meanings in SPC. **Repeatability** is the ability to produce comparable results within a group of conditions (e.g. people, instruments, reagents, ...), while **reproducibility** refers to the ability to replicate results across different conditions (e.g. between two assayers or pieces of equipment). Initially repeatability should be demonstrated by having a scientist test the same set of samples with 2 independently prepared sets of working reagents/cells (note: these experiments can be performed at the same time or on different days) on the same set of equipment. Once repeatability has been established, reproducibility can be determined between different assayers, pieces of equipment, or lots of reagents or cells.
+The Replicate-Experiment [@eastwood2006a] is based on Bland-Altman difference analysis [@bland1986] between two sets of measurements and is used to assess either **repeatability** or **reproducibility**. These terms have specific meanings in SPC. **Repeatability** is the ability to produce comparable results within a group of conditions (e.g. people, instruments, reagents, ...), while **reproducibility** refers to the ability to replicate results across different conditions (e.g. between two assayers or pieces of equipment). Initially repeatability should be demonstrated by having a scientist test the same set of samples with 2 independently prepared sets of working reagents/cells (note: these experiments can be performed at the same time or on different days) on the same set of equipment. Once repeatability has been established, reproducibility can be determined between different assayers, pieces of equipment, or lots of reagents or cells.
 
 ## Rationale
 
-Replicate-Experiment studies[@iversen2004] are used to formally evaluate the *within-run* assay variability and formally compare a new assay to the existing (old) assay. They also allow a preliminary assessment of the *overall* or *between-run* assay variability, but two runs are not enough to adequately assess overall variability. Post-production monitoring, such as Retrospective MSR[@haas2004] analysis and Control Charts[@beck2004] are used to formally evaluate the overall variability in the assay. Note that the Replicate-Experiment study is a diagnostic and decision tool used to establish that the assay is ready to go into production by showing that the endpoints of the assay are repeatable over a range of values. It is not intended as a substitute for post-production monitoring or to provide an estimate of the overall Minimum Significant Ratio (MSR).
+Replicate-Experiment studies [@iversen2012] are used to formally evaluate the *within-run* assay variability and formally compare a new assay to the existing (old) assay. They also allow a preliminary assessment of the *overall* or *between-run* assay variability, but two runs are not enough to adequately assess overall variability. Post-production monitoring, such as Retrospective MSR [@haas2017] analysis and Control Charts [@beck2017] are used to formally evaluate the overall variability in the assay. Note that the Replicate-Experiment study is a diagnostic and decision tool used to establish that the assay is ready to go into production by showing that the endpoints of the assay are repeatable over a range of values. It is not intended as a substitute for post-production monitoring or to provide an estimate of the overall Minimum Significant Ratio (MSR).
 
 It may seem counter-intuitive to call the differences between two independent assay runs as *within-run* variability. However, the terminology results from how assay runs are defined. Experimental variation is categorized into two distinct components: *between-run* and *within-run* sources. Consider the following examples:
 
@@ -58,11 +58,11 @@ In the efficacy mode, it is particularly important to have samples where the act
 
 Initially **repeatability** should be demonstrated with identical compounds tested with 2 independently prepared sets of reagents/cells. Once **repeatability** has been demonstrated for a protocol, it is ready for routine testing. The assay should be monitored to ensure it behaves as validated. This can include any or all of the following methods:
 
--   Control charting reference compound(s)[@beck2004].
+-   Control charting reference compound(s) [@beck2017].
 
--   Retrospective MSR analysis[@haas2004].
+-   Retrospective MSR analysis [@haas2017].
 
--   periodic retests if the samples used in previous replicate experiments to compare to previous data[@eastwood2006].
+-   periodic retests if the samples used in previous replicate experiments to compare to previous data [@eastwood2006].
 
 The replicate experiment is also used to validate minor assay changes such as new assayers, equipment substitutions, or changes to lots of reagents or cells. In this case, the data from identical samples is compared in the current and new formats. Historical data can be used for the current format, as long as it comes from a single experiment.
 
@@ -366,7 +366,7 @@ effCalcData
 
 ```
 
-Once the data have been uploaded, the replicate experiment calculations are displayed, @tbl-effCalcData. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
+Once the data have been uploaded, the replicate experiment calculations are displayed, @tbl-effCalcData. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019]***.***
 
 ![Mean-Difference plot of efficacy data.](Webtool%20Output/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_MSDFig_2024-10-28%2013_11_05.356727.png){#fig-effMDplot}
 
@@ -452,7 +452,7 @@ potCalcData <- read_csv('Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.29397
 potCalcData
 ```
 
-Once the data have been uploaded, the replicate experiment calculations are displayed, as shown in @tbl-potCalcData. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The Geometric Mean and the Ratio represent the mean and difference values for the log(Potency) data after they have been transformed back to the original linear scale. Recall that $log(A) - log(B) = log(A/B)$, so the difference between 2 log values becomes a ratio, when anti-logged. Similarly, the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis. Calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
+Once the data have been uploaded, the replicate experiment calculations are displayed, as shown in @tbl-potCalcData. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The Geometric Mean and the Ratio represent the mean and difference values for the log(Potency) data after they have been transformed back to the original linear scale. Recall that $log(A) - log(B) = log(A/B)$, so the difference between 2 log values becomes a ratio, when anti-logged. Similarly, the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis. Calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019].
 
 ![Mean-Ratio plot of potency data.](Webtool%20Output/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_MSRFig_2024-10-28%2013_02_38.772112.png){#fig-potMD}
 
@@ -482,7 +482,7 @@ The calculated data, plots, and statistics can be downloaded for documentation a
 
 #### Acceptance Criteria
 
-A Replicate-Experiment MSR $\leq 3.0$ and limits of agreement between 1/3 and 3 is generally acceptable for most assays. An MSR $\leq 5.0$ may be acceptable in a secondary assay, where the data will be used for more categorical decisions (e.g. \> 100-fold selectivity vs. the primary assay). If more precision is needed, that can be achieved by increasing the number of times that each sample is independently tested. The MSR calculation for the Replicate-Experiment assumes that most samples tested will only be measured a single time. MSR is dependent upon the number of routine replicates[@haas2004]: $$MSR = 10^{2\sqrt{2(s/\sqrt{n})}}$$
+A Replicate-Experiment MSR $\leq 3.0$ and limits of agreement between 1/3 and 3 is generally acceptable for most assays. An MSR $\leq 5.0$ may be acceptable in a secondary assay, where the data will be used for more categorical decisions (e.g. \> 100-fold selectivity vs. the primary assay). If more precision is needed, that can be achieved by increasing the number of times that each sample is independently tested. The MSR calculation for the Replicate-Experiment assumes that most samples tested will only be measured a single time. MSR is dependent upon the number of routine replicates [@haas2017]: $$MSR = 10^{2\sqrt{2(s/\sqrt{n})}}$$
 
 ```{r}
 #| label: tbl-MSRn
