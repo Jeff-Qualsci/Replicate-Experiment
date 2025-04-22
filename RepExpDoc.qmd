@@ -32,7 +32,7 @@ The Replicate-Experiment[@eastwood2006] is based on Bland-Altman difference anal
 
 ## Rationale
 
-Replicate-Experiment studies[@iversen2004] are used to formally evaluate the *within-run* assay variability and formally compare a new assay to the existing (old) assay. They also allow a preliminary assessment of the *overall* or *between-run* assay variability, but two runs are not enough to adequately assess overall variability. Post-Production monitoring, such as Retrospective MSR[@haas2004] analysis and Control Charts[@beck2004] are used to formally evaluate the overall variability in the assay. Note that the Replicate-Experiment study is a diagnostic and decision tool used to establish that the assay is ready to go into production by showing that the endpoints of the assay are repeatable over a range of values. It is not intended as a substitute for post-production monitoring or to provide an estimate of the overall Minimum Significant Ratio (MSR).
+Replicate-Experiment studies[@iversen2004] are used to formally evaluate the *within-run* assay variability and formally compare a new assay to the existing (old) assay. They also allow a preliminary assessment of the *overall* or *between-run* assay variability, but two runs are not enough to adequately assess overall variability. Post-production monitoring, such as Retrospective MSR[@haas2004] analysis and Control Charts[@beck2004] are used to formally evaluate the overall variability in the assay. Note that the Replicate-Experiment study is a diagnostic and decision tool used to establish that the assay is ready to go into production by showing that the endpoints of the assay are repeatable over a range of values. It is not intended as a substitute for post-production monitoring or to provide an estimate of the overall Minimum Significant Ratio (MSR).
 
 It may seem counter-intuitive to call the differences between two independent assay runs as *within-run* variability. However, the terminology results from how assay runs are defined. Experimental variation is categorized into two distinct components: *between-run* and *within-run* sources. Consider the following examples:
 
@@ -44,7 +44,7 @@ It may seem counter-intuitive to call the differences between two independent as
 
 The total variation is the sum of both sources of variation. When comparing two compounds across runs, one must take into account both the *within-run* and *between-run* sources of variation. But when comparing two compounds in the same run, one must only take into account the *within-run* sources, since, by definition, the *between-run* sources affect both compounds equally.
 
-In a Replicate-Experiment study the *between-run* sources of variation cause one run to be on average higher than the other run. However, it would be very unlikely that the difference between the two runs were exactly the same for every compound in the study. These individual compound "differences from the average difference" are caused by the *within-run* sources of variation. The higher the within-run variability the greater the individual compound variation in the assay runs.
+In a Replicate-Experiment study, the *between-run* sources of variation cause one run to be on average higher than the other run. However, it would be very unlikely that the differences between the two runs were exactly the same for every compound in the study. These individual compound "differences from the average difference" are caused by the *within-run* sources of variation. The higher the within-run variability the greater the individual compound variation in the assay runs.
 
 **The analysis approach used in the Replicate-Experiment study is to estimate and factor out between-run variability, and then estimate the magnitude of within-run variability.**
 
@@ -52,7 +52,7 @@ In a Replicate-Experiment study the *between-run* sources of variation cause one
 
 The Replicate-Experiment is intended to be easy to execute with a modest resource commitment. Most executions can be performed with 2-4 assay plates. It is most commonly run in the potency mode, though it can be run in efficacy mode to gain a better understanding of assay variability across the dynamic range of the assay or facilitate the interpretation of screening results.
 
-The potency mode is ideally run with 20-30 active compounds with a broad range of potencies and the potencies should be well spaced across the range of potencies. If this number of active compounds is not available, then it can be run with a smaller set of compounds in replicate, with each replicate treated as an independent sample (e.g. 5 compounds with 5 seperate replicate dilutions).
+The potency mode is ideally run with 20-30 active compounds with a broad range of potencies and the potencies should be well spaced across the range of potencies. If this number of active compounds is not available, then it can be run with a smaller set of compounds in replicate, with each replicate treated as an independent sample (e.g. 5 compounds with 5 separate replicate dilutions).
 
 In the efficacy mode, it is particularly important to have samples where the activity spans the dynamic range of the assay. Often the variability of measurements will not be constant across the dynamic range of the assay. For this reason, efficacy studies should not be conducted with random screening plates, since most compounds will be inactive and could skew the assessment. It may be simpler to use a small number of active compounds in a. dilution series, as if for a potency determination, but treat each dilution as an independent sample for the efficacy analysis. This will ensure that the data cover the entire dynamic range of the assay with just a few compounds.
 
@@ -60,11 +60,11 @@ Initially **repeatability** should be demonstrated with identical compounds test
 
 -   Control charting reference compound(s)[@beck2004].
 
--   Retrospective MSR studies[@haas2004].
+-   Retrospective MSR analysis[@haas2004].
 
 -   periodic retests if the samples used in previous replicate experiments to compare to previous data[@eastwood2006].
 
-The replicate experiment is also used to validate minor assay changes such as new assayers, equipment substitutions, or changes to lots of reagents or cells. In this case the data from identical samples is compared in the current and new formats. Historical data can be used for the current format, as long as it comes from a single experiment.
+The replicate experiment is also used to validate minor assay changes such as new assayers, equipment substitutions, or changes to lots of reagents or cells. In this case, the data from identical samples is compared in the current and new formats. Historical data can be used for the current format, as long as it comes from a single experiment.
 
 ## Data Analysis {#sec-data_analysis}
 
@@ -74,15 +74,15 @@ The statistical analysis assumes that any measurement errors are normally distri
 
 2.  Calculate the mean ($\bar{d}$) and standard deviation (sd) for the set of the difference values.
 
-3.  Calculate the difference limits $DLs = \bar{d}\pm2sd/\sqrt{n}$ Where n is the number of compounds tested. This is the 95% confidence interval for the mean difference.
+3.  Calculate the difference limits $DLs = \bar{d}\pm2sd/\sqrt{n}$ where n is the number of compounds tested. This is the 95% confidence interval for the mean difference.
 
-4.  Calculate limits of agreement $LSAs = \bar{d}\pm2sd$ Most of the individual compound differences (\~95%) should fall within these limits.
+4.  Calculate limits of agreement $LSAs = \bar{d}\pm2sd$. Most of the individual compound differences (\~95%) should fall within these limits.
 
 5.  Samples outside the agreement limits are flagged as outliers. Since these values are 2sd outliers, it is expected that 5% of the data to be flagged if the data follow a normal distribution. This is not a flag for automatically excluding data.
 
-6.  Calculate the Minimum Significant Difference $MSD = 2sd$ This is the minimum difference between two compounds that is statistically significant.
+6.  Calculate the Minimum Significant Difference $MSD = 2sd$. This is the minimum difference between two compounds that is statistically significant.
 
-7.  For potency data all statistics are transformed back to linear scale and differences become ratios (e.g. Minimum Significant Ratio $MSR = 10^{MSD}$).
+7.  For potency data all statistics are transformed back to linear scale and differences become ratios (e.g. Minimum Significant Ratio, $MSR = 10^{MSD}$).
 
 ## Interpretation
 
@@ -94,7 +94,7 @@ The replicate experiment is based on two assumptions:
 
 ```{r}
 #| label: fig-diffdist
-#| fig-cap: Difference Distribution for Replicate Experiment
+#| fig-cap: Difference Distribution for Replicate Experiment.
 
 ggplot(data.frame(x = c(-4, 4)), aes(x)) +
   stat_function(fun = dnorm,
@@ -134,21 +134,21 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
 
 ```
 
-@fig-diffdist illustrates that distribution of difference values along with the associated analysis statistics. The difference limits are derived from the standard error of the mean (SEM) and represent a 95% CI around the mean difference. If the difference limits include 0, then there is no discernible systematic bias between the first and second measurement. **Note: As the number of samples increases, a few samples may fall outside the LSA due to random variation, especially if they are just outside of the LSA. If outliers are to be excluded, start with the most extreme differences. Only obvious outliers or those with an assignable cause should be removed.**
+@fig-diffdist illustrates the distribution of difference values along with the associated analysis statistics. The difference limits are derived from the standard error of the mean (SEM) and represent a 95% CI around the mean difference. If the difference limits include 0, then there is no discernible systematic bias between the first and second measurements. **Note: As the number of samples increases, a few samples may fall outside the LSA due to random variation, especially if they are just outside of the LSA. If outliers are to be excluded, start with the most extreme differences. Only obvious outliers or those with an assignable cause should be removed.**
 
 ### Variability of Data Sets
 
-The two most common types of data reported from *in vitro* bioassays are efficacy and potency. Understanding the variability of these data types is essential for the interpretation of replicate experiment results
+The two most common types of data reported from *in vitro* bioassays are efficacy and potency. Understanding the variability of these data types is essential for the interpretation of replicate experiment results.
 
 #### Efficacy
 
-**Efficacy** measures the magnitude of an **effect** at a given concentration and is usually what is directly measured in an assay well. The variability is efficacy measurements is normally distributed at given concentration, though this variability may change across the dynamic range of the assay. There are two primary factors that can contribute to this. The first is the detection method. For example fluorescence intensity often exhibit a constant coefficient of variation (cv) across the dynamic range, while the variability of ratiometric fluorescence polarization measurements is more constant. Second the sigmoidal nature of most dose response curves means that the variability of individual efficacy measurements will be greatest around the inflection point in the curve, due to the effect that small differences in sample concentration can exhibit. While it is difficult to predict the overall effect in advance, the replicate experiment with samples across the full dynamic range of the assay should indicate whether the data can be treated as a single population or should be divided into more discrete populations (e.g. inactive, moderately active, highly active).
+**Efficacy** measures the magnitude of an **effect** at a given concentration and is usually what is directly measured in an assay well. The variability is efficacy measurements is normally distributed at a given concentration, though this variability may change across the dynamic range of the assay. There are two primary factors that can contribute to this. The first is the detection method. For example fluorescence intensity often exhibits a constant coefficient of variation (cv) across the dynamic range, while the variability of ratiometric fluorescence polarization measurements is more constant. Second, the sigmoidal nature of most dose-response curves means that the variability of individual efficacy measurements will be greatest around the inflection point in the curve, due to the effect that small differences in sample concentration can exhibit. While it is difficult to predict the overall effect in advance, the replicate experiment with samples across the full dynamic range of the assay should indicate whether the data can be treated as a single population or should be divided into more discrete populations (e.g. inactive, moderately active, highly active).
 
 #### Potency Data {#sec-potency-data}
 
-**Potency** data are the **concentration** of a substance which elicits a specified efficacy. These are generated by fitting concentration response curves to the Hill equation (Y vs log(X)) to determine the binding constant and slope. While AC~50~ values are used for the examples, any potency measurement (K~i~, LD~80~, etc.) can be used.
+**Potency** data are the **concentration** of a substance that elicits a specified efficacy. These are generated by fitting concentration-response curves to the Hill equation (Y vs log(X)) to determine the binding constant and slope. While AC~50~ values are used for the examples, any potency measurement (K~i~, LD~80~, etc.) can be used.
 
-Potency values generally follow a log-normal distribution[@elassaiss-schaap2020]. In other words, log transformed potency values are normally distributed. Potency values are determined from the efficacy plotted at log(concentration), which is often represented as an x-axis with a log scale. Therefore when doing a statistical analysis, which assumes the data are normally distributed, the analysis must be done on log transformed data.
+Potency values generally follow a log-normal distribution [@elassaiss-schaap2020]. In other words, log transformed potency values are normally distributed. Potency values are determined from the efficacy plotted at log(concentration), which is often represented as an x-axis with a log scale. Therefore when doing a statistical analysis, which assumes the data are normally distributed, the analysis must be done with log transformed potency values.
 
 ```{r}
 #| label: fig-logNormPlot
@@ -195,17 +195,17 @@ logNormFig
 
 ```
 
-A simulated data set of 10,000 potency measurements of compound with a potency of 100 nM was used to illustrate some of the properties of log-normal data. @fig-logNormPlot shows several views of the data distribution. Panel A represents the original data values plotted on a linear axis. Panel B is the log~10~ transformed potency data and exhibits the expected normal distribution centered on 2 (log~10~(100) = 2). Panel C is. the original data plotted with log~10~ transformed axis which now appears to be normally distributed. Transforming the axis spacing for log-normal data facilitates visualization of the variability in the data. The true potency of 100 is the geometric mean of the data set and would represent the median in the distribution of the original data. Note that the peak of the original data is less than the geometric mean, since the data is right skewed. Similarly this skew will result in arithmetic means do not represent the midpoint of the distribution.
+A simulated data set of 10,000 potency measurements of a compound with a true potency of 100 nM was used to illustrate some of the properties of log-normal data. @fig-logNormPlot shows several views of the data distribution. Panel A represents the original data values plotted on a linear axis. Panel B is the log~10~ transformed potency data and exhibits the expected normal distribution centered on 2 (log~10~(100) = 2). Panel C is the original data plotted with log~10~ transformed axis which now appears to be normally distributed. Transforming the axis spacing for log-normal data facilitates visualization of the variability in the data. The true potency of 100 is the geometric mean of the data set and would represent the median in the distribution of the original data. Note that the peak of the original data is less than the geometric mean, since the data is right skewed. This skew in the linear potency data illustrates why geometric means, rather than arithmetic means, are used for summarizing potency data. The geometric mean corresponds to the center of the log-normal data distribution.
 
-This log-normal data distribution means that the data analysis must be performed on log(Potency) data as described in @sec-data_analysis. This ensures that the differences will be normally distributed as shown in @fig-diffdist. These are then converted back to the linear scale for reporting, so differences are transformed to ratios and a difference of 0 becomes a ratio of 1. These transformed values are also log-normal so the axis scales are log transformed for graphing. **Note: If potency has already been transformed into a log scale (eg. pK~a~ or log(IC~50~) it can be analyzed in the [Replicate-Experiment web tool](https://agm.ncats.nih.gov/app/) with the Efficacy setting.**
+This log-normal data distribution means that the data analysis must be performed on log(Potency) data as described in @sec-data_analysis. This ensures that the differences will be normally distributed as shown in @fig-diffdist. These are then converted back to the linear scale for reporting, so differences are transformed to ratios and a difference of 0 becomes a ratio of 1. These transformed values are also log-normal so the axis scales are log transformed for graphing. **Note: If potency has already been transformed into a log scale (eg. pK~a~ or log(IC~50~) it should be analyzed in the [Replicate-Experiment web tool](https://agm.ncats.nih.gov/app/) with the Efficacy setting.**
 
-### Bland-Altman Plot
+### Bland-Altman Plot {#sec-bland-altman-plot}
 
-The Replicate-Experiment has two primary assumptions. The first assumption it that the differences between each pair of measurements should be random and normally distributed. Additionally, the mean difference for the set of paired measurements should be 0 (or 1 for ratios), if the measured values are equivalent.Bland-Altman plots [@bland1986] can be used to examine both the assumptions in the replicate experiment. In this plot, the x-axis is the mean of the measurement with the measurement difference on the y-axis.
+The Replicate-Experiment has three primary assumptions. The first assumption it that the differences between each pair of measurements and should be random and normally distributed, Second, the variability is consistent across the range of measured values. Finally, the mean difference for the set of paired measurements should be 0 (or 1 for ratios), if the measured values are equivalent. Bland-Altman plots [@bland1986] can be used to examine both the assumptions in the replicate experiment. In this plot, the x-axis is the mean of the measurement with the measurement difference on the y-axis.
 
 ```{r}
-#| label: fig-baplot
-#| fig-cap: Bland-Altman Plots
+#| label: tbl-baExData
+#| tbl-cap: Bland-Altman Data.
 
 set.seed(10302024) #For reproducible example. 
 
@@ -213,6 +213,35 @@ mdData <- msd_data(SmplNum = 100, TstMSD = 20, Shift = 2) %>%
   mutate(Sample = as.character(Sample),
          Mean = (Exp1 + Exp2) / 2,
          Difference = Exp1 - Exp2)
+
+baSmplData <- mdData %>% 
+  slice_head(n = 6) %>% 
+  gt() %>% 
+  tab_header(title = 'Bland-Altman Data')
+
+baSmplData
+
+```
+
+A sample data set of 100 samples tested twice can be used to illustrate these concepts. Using just the first 2 steps in @sec-data_analysis will produce a table with the measurements for each sample along with the mean an difference for each pair as shown in @tbl-baExData.
+
+```{r}
+#| label: fig-baHist
+#| fig-cap: Histogram of Difference Values.
+
+baHistPlot <- ggplot(mdData, aes(x = Difference)) +
+  geom_histogram(bins = 13) +
+  theme_linedraw()
+
+baHistPlot
+
+```
+
+A histogram of the difference values for each pair of samples is centered around 0 and the distribution is roughly normal @fig-baHist
+
+```{r}
+#| label: fig-baplot
+#| fig-cap: Bland-Altman Plots.
 
 mdStats <- repexp.stats(mdData) %>% 
   mutate(across(-n, \(x) signif(x, digits = 3)))
@@ -268,7 +297,7 @@ logNormFig <- mdConceptPlot / mdPlot + plot_annotation(tag_levels = 'A')
 logNormFig
 ```
 
-@fig-baplot illustrates this. Panel A shows a simulated data set with the y-axis is scaled in units of standard deviation similar to @fig-diffdist with the same color scheme. The data points show the mean and difference values for each measured pair. Panel B shows the same data with the observed differences on the y-axis. The x-axis spreads the data across the dynamic range of the measurements, so it's possible to visualize if the variation is distributed equally across this range. The difference values should cluster near 0 on the y-axis with fewer points as you increase the distance from 0. Panel B shows a more conventional representation. There is a reference line for 0 as well as lines to indicate the mean difference, the difference limits, and the limits of statistical agreement. About half of the data points should be in either side of the mean difference line.
+The summarized data for each pair can then be visualized using Bland Altman plot with the Mean on the x-axis and the Difference on the y-axis, @fig-baplot Panel A shows a simulated data set with the y-axis is scaled in units of standard deviation similar to @fig-diffdist with the same color scheme. Panel B shows the same data with the observed differences on the y-axis. The x-axis spreads the data across the dynamic range of the measurements, so it's possible to visualize if the variation is distributed equally across this range. The difference values should cluster near 0 on the y-axis with fewer points as you increase the distance from 0. Panel B shows a more conventional representation. There is a reference line for 0 as well as lines to indicate the mean difference, the difference limits, and the limits of statistical agreement. About half of the data points should be in either side of the mean difference line.
 
 While the standard Bland-Altman plot is appropriate for efficacy data or log transformed potency data, it must be modified to display potency data in the original concentration units. The x-axis is log transformed and the ratio of the two measurements is plotted on the y-axis (see @sec-potency-data).
 
@@ -299,13 +328,13 @@ corrPlot
 
 ## Examples
 
-All examples created with [Replicate Experiment web tool](https://agm.ncats.nih.gov/app/), which also adds sample labels to any data outside of the Agreement Limits.
+All the examples below were created with the [Replicate Experiment web tool](https://agm.ncats.nih.gov/app/), which also adds sample labels to any data outside of the Agreement Limits.
 
 ### Efficacy - Constant SD
 
 Efficacy measurements can be made with raw data from a detector or data which has been normalized (e.g. % Activity) using plate controls. Normalized data is preferred, since it provides biological context and facilitates comparisons across the lifetime of an assay. ***Note all the example data sets are % activity, where the vehicle control is set to 0.***
 
-Generally efficacy experiments can be performed with a single plate of samples tested twice. Even a 96-well plate with control wells will provide enough samples for a good statistical analysis. This data set represents 320 samples tested in 2 independent experiments.
+Generally, efficacy experiments can be performed with a single plate of samples tested twice. Even a 96-well plate with control wells will provide enough samples for a good statistical analysis. This data set represents 320 samples tested in 2 independent experiments.
 
 ```{r}
 #| label: tbl-effRaw
@@ -337,15 +366,15 @@ effCalcData
 
 ```
 
-Once the data have been uploaded, the replicate experiment calculations are displayed. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis and download. Calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
+Once the data have been uploaded, the replicate experiment calculations are displayed, @tbl-effCalcData. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
 
 ![Mean-Difference plot of efficacy data.](Webtool%20Output/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_MSDFig_2024-10-28%2013_11_05.356727.png){#fig-effMDplot}
 
-The Bland-Altman plot shows that the variation is consistent across the range of measured values with most of the difference values close to 0. The statistics in the plot are based on the distribution in @fig-diffdist.
+The Bland-Altman plot, @fig-effMDplot shows that the variation is consistent across the range of measured values with most of the difference values close to 0. The statistics in the plot are based on the distribution in @fig-diffdist.
 
 ```{r}
 #| label: tbl-effStats
-#| tbl-cap: Efficacy Replicate Experiment Statistics
+#| tbl-cap: Efficacy Replicate Experiment Statistics.
 
 effStats <- read_csv('Webtool Output/MSD20Data320_EFF_2024-10-28 13_11_21.084501/MSD20Data320_EFF_Stats_tbl.csv', col_types = 'cdddddd') %>% 
   gt() %>% 
@@ -356,9 +385,7 @@ effStats
   
 ```
 
-The statistics for the Bland-Altman plot are shown in @tbl-effStats.
-
-There are 18 samples with differences outside of the agreement limits (95% CI) which are flagged and labelled in the report graphs. This is close to the expected value of 16 for 320 samples. The MSD is 21.1 and recall that MSD equals 2 standard deviations. It appears that all of the data are within about 3 standard deviations, so none of the flagged samples appear to be obvious outliers.
+The statistics for the Bland-Altman plot are shown in @tbl-effStats. There are 18 samples with differences outside of the agreement limits (95% CI) which are flagged and labelled in the report graphs. This is close to the expected value of 16 for 320 samples. The MSD is 21.1 and recall that MSD equals 2 standard deviations. It appears that all of the data are within about 3 standard deviations, so none of the flagged samples appear to be obvious outliers.
 
 ![Efficacy Correlation plot.](Webtool%20Output/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_CorrFig_2024-10-28%2013_11_05.357563.png){#fig-effcorrplot}
 
@@ -368,7 +395,7 @@ The calculated data, plots, and statistics can be downloaded for documentation a
 
 ### Constant CV
 
-Often the variability in efficacy data varies across the dynamic range of an assay and is better represented by the CV. Unfortunately this violates a primary assumption in the analysis, making the replicate-experiment less useful. This is illustrated in the following example, where the the CV is 10% across the assay range.
+Often the variability in efficacy data varies across the dynamic range of an assay and is better represented by the CV. Unfortunately this violates a primary assumption in the analysis, making the replicate-experiment less useful. This is illustrated in the following example, where the CV is 10% across the assay range.
 
 ![Mean Difference plot for an assay with 10% CV.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_MSDFig_2024-10-28%2013_05_38.837807.png){#fig-effMDcv}
 
@@ -376,7 +403,7 @@ Often the variability in efficacy data varies across the dynamic range of an ass
 
 ```{r}
 #| label: tbl-effCVStats
-#| tbl-cap: Efficacy(constant cv) Replicate Experiment Statistics
+#| tbl-cap: Efficacy (constant cv) Replicate Experiment Statistics.
 
 effCvStats <- read_csv('Webtool Output/MSD_320_CV10_EFF_2024-10-28 13_10_15.440094/MSD_320_CV10_EFF_Stats_tbl.csv', col_types = 'cdddddd') %>% 
   gt() %>% 
@@ -386,11 +413,13 @@ effCvStats <- read_csv('Webtool Output/MSD_320_CV10_EFF_2024-10-28 13_10_15.4400
 effCvStats
 ```
 
-![Correlation plot for an assay with 10% CV.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_CorrFig_2024-10-28%2013_05_38.838566.png)
+@tbl-effCVStats shows the statistics associated with @fig-effMDcv. Since the variability in the measurements is not constant across the dynamic range of the assay, it violates one of the assumptions of the Bland-Altman analysis, @sec-bland-altman-plot. Therefore these statistics are not meaningful.
 
-The same pattern is observed in the correlation plot with the spread between experiments increasing as the efficacy increases.
+![Correlation plot for an assay with 10% CV.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_CorrFig_2024-10-28%2013_05_38.838566.png){#fig-effConstCVCorr}
 
-Assays which show this behavior should not use the replicate experiment as a general measurement of uncertainty in the assay. However Replicate-Experiments with the vehicle and active controls analyzed separately can be useful to document that the assay is repeatable and helping to define limits for activity.
+The same pattern is observed in the correlation plot, @fig-effConstCVCorr, with the spread between experiments increasing as the efficacy increases.
+
+Assays which show this behavior should not use the replicate experiment as a general measurement of uncertainty in the assay. However Replicate-Experiments with the vehicle and active controls analyzed separately can be useful to document that the assay is repeatable and help to define the limits for activity.
 
 ### Potency
 
@@ -423,15 +452,15 @@ potCalcData <- read_csv('Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.29397
 potCalcData
 ```
 
-Once the data have been uploaded, the replicate experiment calculations are displayed. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The GeoMean is the geometric mean of the potency values and the Ratio is the transformation of the difference from the statistical analysis. Recall that $log(A) - log(B) = log(A/B)$, so the difference between 2 log values becomes a ratio, when anti-logged. Similarly the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis and download. Calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
+Once the data have been uploaded, the replicate experiment calculations are displayed, as shown in @tbl-potCalcData. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The Geometric Mean and the Ratio represent the mean and difference values for the log(Potency) data after they have been transformed back to the original linear scale. Recall that $log(A) - log(B) = log(A/B)$, so the difference between 2 log values becomes a ratio, when anti-logged. Similarly, the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis. Calculated values and statistics are displayed to 3 significant digits.***[@dahlin2004]
 
 ![Mean-Ratio plot of potency data.](Webtool%20Output/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_MSRFig_2024-10-28%2013_02_38.772112.png){#fig-potMD}
 
-The Bland-Altman plot for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies is represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around 1 with about half of the data on either side of the center. The variability also is evenly distributed across the range of x values
+The Bland-Altman plot, @fig-potMD, for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies is represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around 1 with about half of the data on either side of the center. The variability is also evenly distributed across the range of x values.
 
 ```{r}
 #| label: tbl-potStats
-#| tbl-cap: Potency Replicate Experiment Statistics
+#| tbl-cap: Potency Replicate Experiment Statistics.
 
 potStats <- read_csv('Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.293975/MSR3data32_POT_Stats_tbl.csv', col_types = 'cdddddd')
 
@@ -443,7 +472,7 @@ potStatsTbl <- potStats %>%
 potStatsTbl
 ```
 
-The corresponding statistics are shown in @tbl-potStats. There is only a single labelled sample in the Bland-Altman plot, which is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
+The corresponding statistics are shown in @tbl-potStats. There is only a single value labelled as an outlier in the Bland-Altman plot. This is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
 
 ![Potency Correlation plot.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_CorrFig_2024-10-28%2013_05_38.838566.png){#fig-potCorr}
 
@@ -453,7 +482,7 @@ The calculated data, plots, and statistics can be downloaded for documentation a
 
 #### Acceptance Criteria
 
-A Replicate-Experiment MSR $\leq 3.0$ and limits of agreement between 1/3 and 3 is generally acceptable for most assays. A MSR $\leq 5.0$ may be acceptable in secondary assay, where the data will be used for more categorical decisions (e.g. \> 100-fold selectivity vs. the primary assay). If more precision is needed, that can be achieved by increasing the number of times that each sample in independently tested. The MSR calculation for the Replicate-Experiment assumes that most samples tested will only be measured a single time. MSR is dependent upon the number of routine replicates[@haas2004]: $$MSR = 10^{2\sqrt{2(s/\sqrt{n})}}$$
+A Replicate-Experiment MSR $\leq 3.0$ and limits of agreement between 1/3 and 3 is generally acceptable for most assays. An MSR $\leq 5.0$ may be acceptable in a secondary assay, where the data will be used for more categorical decisions (e.g. \> 100-fold selectivity vs. the primary assay). If more precision is needed, that can be achieved by increasing the number of times that each sample is independently tested. The MSR calculation for the Replicate-Experiment assumes that most samples tested will only be measured a single time. MSR is dependent upon the number of routine replicates[@haas2004]: $$MSR = 10^{2\sqrt{2(s/\sqrt{n})}}$$
 
 ```{r}
 #| label: tbl-MSRn
@@ -471,17 +500,17 @@ MSRnTbl <- tibble(n, MSRn) %>%
 
 ```
 
-@tbl-MSRn shows the calculated MSR for different numbers of independent replicates. The value of n indicates the number of different experiments each compound would be tested in to reach the calculated MSR.
+@tbl-MSRn shows the calculated MSR for different numbers of independent replicates. The value of n indicates the number of different experiments each compound should be tested in to reach the calculated MSR.
 
 ### Too Few Samples
 
-Early in a project, it may be a struggle to identify a sufficient number of validated, active samples to perform a replicate experiment. Here is an example where there are only 5 unique samples. Unfortunately this low sample number does not provide enough statistical power to obtain a good estimate of the assays variability, so the Ratio limits and MSR can appear to be greater than their true values.
+Early in a project, it may be a struggle to identify a sufficient number of validated, active samples to perform a replicate experiment. Here is an example where there are only 5 unique samples. Unfortunately, this low sample number does not provide enough statistical power to obtain a good estimate of the assay's variability, so the Ratio limits and MSR can appear to be greater than their true values.
 
-![Mean Ratio plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_MSRFig_2024-10-28%2013_04_13.224078.png)
+![Mean Ratio plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_MSRFig_2024-10-28%2013_04_13.224078.png){#fig-baFewSmplPlot}
 
 ```{r}
 #| label: tbl-fewSmplStats
-#| tbl-cap: Replicate Experiment Statistics
+#| tbl-cap: Replicate Experiment Statistics.
 
 fewSmplStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.699411/FewSmpl_POT_Stats_tbl.csv', col_types = 'cdddddd') %>% 
   gt() %>% 
@@ -491,19 +520,19 @@ fewSmplStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.6994
 fewSmplStats
 ```
 
-@tbl-fewSmplStats shows the associated statistics. While the MSR appears to be high we also see that n is only 5, so there is probably not enough data to provide a good estimate of the MSR.
+The Bland-Altman plot, @fig-baFewSmplPlot, and the associated statistics, @tbl-fewSmplStats, illustrate the problem. While the MSR appears to be high, we also see that n is only 5, so there is probably not enough data to provide a good estimate of the MSR.
 
 ![Correlation Plot](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_CorrFig_2024-10-28%2013_04_13.22479.png){#fig-fewCorr}
 
-Fortunately there is a simple solution to this problem. Each sample can be replicated multiple times on the plates and the replicate dose response curves analyzed as if they were from different samples. Ideally, these replicate samples should be prepared as if they were unique compounds with their own dilution series. In this example, the 5 unique samples were each replicated 6 times (e.g. sample 1 becomes 1A, 1B, 1C ...). This produces 30 pairs of potency values for the analysis
+Fortunately, there is a simple solution to this problem. Each sample can be replicated multiple times on the plates. The replicate dose-response curves are then analyzed as if they were from different samples. Ideally, these replicate samples should be prepared independently, as if they were unique compounds with their own dilution series. In this example, the 5 unique samples were each replicated 6 times (e.g. sample 1 becomes 1A, 1B, 1C ...). This produces 30 pairs of potency values for the analysis
 
-![Replicated samples Mean Ratio plot,](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_MSRFig_2024-10-28%2013_04_44.580655.png)
+![Replicated samples Mean Ratio plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_MSRFig_2024-10-28%2013_04_44.580655.png){#fig-baFewSmplsRepsPlot}
 
-The Bland-Altman plot now shows 5 clusters of difference values corresponding to the 5 replicated samples.
+The Bland-Altman plot, @fig-baFewSmplsRepsPlot, now shows 5 clusters of difference values corresponding to the 5 replicated samples.
 
 ```{r}
 #| label: tbl-fewSmplRepStats
-#| tbl-cap: Replicate Experiment Statistics
+#| tbl-cap: Replicate Experiment Statistics.
 
 fewSmplRepStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.699411/FewSmplRep_POT_Stats_tbl.csv', col_types = 'cdddddd') %>% 
   gt() %>% 
@@ -513,21 +542,42 @@ fewSmplRepStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.6
 fewSmplRepStats
 ```
 
-@tbl-fewSmplRepStats shows a much lower MSR.
+The associated statistics, @tbl-fewSmplRepStats, show a much lower MSR.
 
-![Replicated samples correlation plot,](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_CorrFig_2024-10-28%2013_04_44.581414.png){#fig-repCorr}
+![Replicated samples correlation plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_CorrFig_2024-10-28%2013_04_44.581414.png){#fig-repCorr}
 
-While it is easy to identify the clusters due to the sample replication in the graphs, the improvement in statistical power from n=30 instead of n = 5 provides a much better estimate of the true assay variability. Both the MSR and the ratio limits are significantly lower.
+Similar clustering is observed in the correlation plot, @fig-repCorr. While it is easy to identify the clusters due to the sample replication in the graphs, the improvement in statistical power from n=30 instead of n = 5 provides a much better estimate of the true assay variability. Both the MSR and the ratio limits are significantly lower.
 
 ### Systematic Difference between Runs
 
-When the mean ratio line is displaced from the ratio = 1 reference line, this may be an indication of a systematic difference between the two experiments. However if the reference line is within the ratio limits, this could simply be random variation, or due to a cause with a very small effect. If the reference line is outside of the ratio limits, this can indicate a systematic difference which should be investigated.
+When the mean ratio line is displaced from the ratio = 1 reference line, this may be an indication of a systematic difference between the two experiments. However, if the reference line is within the ratio limits, this could simply be random variation, or due to a cause with a very small effect. If the reference line is outside of the ratio limits, this can indicate a systematic difference which should be investigated.
+
+```{r}
+#| label: tbl-potShiftData
+#| tbl-cap: Replicate Experiment Potency Shift Data.
+
+potShiftData <- read_csv('Webtool Output/MSR3data32shift_POT_2025-02-13 16_20_47.322363/MSR3data32shift_POT_OutputData_tbl.csv', col_types = 'cdddddd') %>% 
+  slice_head(n = 6) %>% 
+  gt() %>% 
+  tab_header(title = 'Potency Shift Data.') %>% 
+  fmt_scientific()
+  
+potShiftData
+```
+
+The data in @tbl-potShiftData is used to illustrate this situation.
+
+![Systematic error Bland-Altman plot.](Webtool%20Output/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_MSRFig_2025-02-13%2016_20_14.952696.png){#fig-seBAPlot}
+
+Now the black reference line (Ratio = 1) is clearly outside of the observed Ratio Limits around the blue Center Line for the data. This indicates that there is a systematic shift in the data between the first and second measurements of the compound potencies.
 
 ```{r}
 #| label: tbl-potShiftStats
-#| tbl-cap: Replicate Experiment Statistics
+#| tbl-cap: Potency Shift Replicate Experiment Statistics.
 
-potShiftStats <- read_csv('Webtool Output/MSR3data32shift_POT_2025-02-13 16_20_47.322363/MSR3data32shift_POT_OutputData_tbl.csv', col_types = 'cdddddd') %>% 
+potShiftStats <- read_csv('Webtool Output/MSR3data32shift_POT_2025-02-13 16_20_47.322363/MSR3data32shift_POT_Stats_tbl.csv')
+
+potShiftStats <- potStats %>% 
   gt() %>% 
   tab_header(title = 'Potency Stats') %>% 
   fmt_scientific()
@@ -535,13 +585,11 @@ potShiftStats <- read_csv('Webtool Output/MSR3data32shift_POT_2025-02-13 16_20_4
 potShiftStats
 ```
 
-![Systematic error Correlation plot.](Webtool%20Output/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_MSRFig_2025-02-13%2016_20_14.952696.png){#fig-seCorr}
+The associated statistics, @tbl-potShiftStats, also shows that the expected ratio of 1 is not within the ratio limits.
 
-@tbl-potShiftStats shows that the expected ratio of 1 is not within the ratio limits.
+![Systematic Shift Correlation Plot.](Webtool%20Output/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_CorrFig_2025-02-13%2016_20_14.953631.png){#fig-potShiftCorrPlot}
 
-Here we can see an example where the reference line lies outside of the ratio limits. The correlation line is also slightly different from the unity line.
-
-![](Webtool%20Output/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_CorrFig_2025-02-13%2016_20_14.953631.png)
+The correlation plot, @fig-potShiftCorrPlot, also shows separation between the reference identity line and the correlation line.
 
 Common causes can include any of the following:
 
@@ -555,6 +603,10 @@ Common causes can include any of the following:
 
 5.  Personnel
 
-If a cause is identified, it should me mitigated (if possible) and the replicate experiment repeated. Sometimes a cause may be identified which includes historical data that can't be changed. If this happens, it may be significant enough to require retesting of key compounds to assess the impact.
+If a cause is identified, it should be mitigated (if possible) and the replicate experiment repeated. Sometimes a cause may be identified which includes historical data that can't be changed. If this happens, it may be significant enough to require retesting of key compounds to assess the impact.
+
+## Acknowledgement
+
+The Assay Guidance Manual Webtools are supported by the Intramural Research Program of the National Center for Advancing Translational Sciences at the National Institutes of Health (ZIA TR000340).
 
 ## References
