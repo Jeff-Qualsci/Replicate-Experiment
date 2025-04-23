@@ -218,7 +218,7 @@ repexp.efficacy<- function(df) {
              across(-c(1), \(x) signif(x, digits = 3)))
     
     # MSRn Table
-    n <- c(1:8)
+    n <- c(2:6)
     MSRn <- 10^(log10(RepExp_Stats$MSR)/sqrt(n))
     
     MSRnTbl <- tibble(n, MSRn) %>% 
@@ -230,7 +230,7 @@ repexp.efficacy<- function(df) {
       scale_x_continuous(trans='log10') + 
       scale_y_continuous(trans='log10')
     
-    list(Data = RepExp_Data, Stats = RepExp_Stats, MDPlot = MeanRatioPlot, CorrPlot = R1R2CorrelationPlot)
+    list(Data = RepExp_Data, Stats = RepExp_Stats, MSRnTbl = MSRnTbl, MDPlot = MeanRatioPlot, CorrPlot = R1R2CorrelationPlot)
   }
 
 # Write report files ----------------------
@@ -255,6 +255,6 @@ repexp.save <- function(report, path) {
 
 # Replicate-Experiment Example Analysis ------------------------------
 
-UsrData <- read_csv('Data/MSR3data32shift.csv')
+UsrData <- read_csv('Data/MSR3data32.csv')
 
-MSR_2.5_Shift_Report <- repexp.potency(UsrData)
+MSR_3_Report <- repexp.potency(UsrData)
