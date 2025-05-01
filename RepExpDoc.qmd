@@ -476,7 +476,7 @@ potStatsTbl
 
 The corresponding statistics are shown in @tbl-potStats. There is only a single value labelled as an outlier in the Bland-Altman plot. This is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
 
-![Potency Correlation plot.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_CorrFig_2024-10-28%2013_05_38.838566.png){#fig-potCorr}
+![Potency Correlation plot.](Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.293975/MSR3data32_CorrFig_2024-10-28 13_02_38.773078.png){#fig-potCorr}
 
 @fig-potCorr is a correlation plot of the two data sets with a unity reference line and the Spearman correlation. The data should overlay the equality reference line.
 
