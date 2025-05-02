@@ -218,8 +218,9 @@ repexp.efficacy<- function(df) {
              across(-c(1), \(x) signif(x, digits = 3)))
     
     # MSRn Table
-    n <- c(2:6)
-    MSRn <- 10^(log10(RepExp_Stats$MSR)/sqrt(n))
+    n <- c(1:6)
+    s <- log10(RepExp_Stats$MSR) / 2
+    MSRn <- 10^((2 * s)/(sqrt(n)))
     
     MSRnTbl <- tibble(n, MSRn) %>% 
       pivot_wider(names_from = n, names_prefix = 'n = ', values_from = MSRn)
@@ -255,6 +256,6 @@ repexp.save <- function(report, path) {
 
 # Replicate-Experiment Example Analysis ------------------------------
 
-UsrData <- read_csv('Data/MSR3data32.csv')
-
-MSR_3_Report <- repexp.potency(UsrData)
+# UsrData <- read_csv('Data/RepExpPotencyShift.csv')
+# 
+# MSR_3_Shift_Report <- repexp.potency(UsrData)

@@ -342,7 +342,7 @@ This data set represents efficacy data with a constant sd, as described in @sec-
 #| label: tbl-effRaw
 #| tbl-cap: Sample efficacy data (sd constant).
 
-effData <- read_csv('Data/MSD20Data320.csv', col_types = 'cdd') %>% 
+effData <- read_csv('Data/RepExpEfficacySD.csv', col_types = 'cdd') %>% 
   slice_head(n = 6) %>% 
   gt() %>% 
   tab_header(title = 'Uploaded Data')
@@ -431,7 +431,7 @@ Below are the first 6 samples from an example experiment with 32 total samples. 
 #| label: tbl-potfRaw
 #| tbl-cap: Sample Potency data.
 
-potData <- read_csv('Data/MSR3data32.csv', col_types = 'cdd') %>% 
+potData <- read_csv('Data/RepExpPotency.csv', col_types = 'cdd') %>% 
   slice_head(n = 6) %>% 
   gt() %>% 
   tab_header(title = 'Uploaded Data')
@@ -476,7 +476,7 @@ potStatsTbl
 
 The corresponding statistics are shown in @tbl-potStats. There is only a single value labelled as an outlier in the Bland-Altman plot. This is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
 
-![Potency Correlation plot.](Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.293975/MSR3data32_CorrFig_2024-10-28 13_02_38.773078.png){#fig-potCorr}
+![Potency Correlation plot.](Webtool%20Output/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_CorrFig_2024-10-28%2013_02_38.773078.png){#fig-potCorr}
 
 @fig-potCorr is a correlation plot of the two data sets with a unity reference line and the Spearman correlation. The data should overlay the equality reference line.
 
@@ -491,7 +491,8 @@ A Replicate-Experiment MSR $\leq 3.0$ and limits of agreement between 1/3 and 3 
 #| tbl-cap: "MSR values assuming different numbers of independent replicates."
 
 n <- c(1:8)
-MSRn <- 10^(log10(potStats$MSR)/sqrt(n))
+s <- log10(potStats$MSR) / 2
+MSRn <- 10^((2 * s)/(sqrt(n)))
 
 MSRnTbl <- tibble(n, MSRn) %>% 
   pivot_wider(names_from = n, names_prefix = 'n = ', values_from = MSRn) %>% 
@@ -502,7 +503,7 @@ MSRnTbl <- tibble(n, MSRn) %>%
 
 ```
 
-@tbl-MSRn shows the calculated MSR for different numbers of independent replicates. The value of n indicates the number of different experiments each compound should be tested in to reach the calculated MSR.
+@tbl-MSRn shows the calculated MSR for different numbers of independent replicates. The value of n indicates the number of different experiments each compound should be tested in to reach the calculated MSR. The MSR can be decreased significantly, if every sample is tested 2 or 3 times.
 
 ### Too Few Samples
 
