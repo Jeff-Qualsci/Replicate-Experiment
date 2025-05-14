@@ -202,7 +202,7 @@ repexp.potency <- function(df) {
     mutate(Outlier = Difference > RepExp_Stats[["ULSA"]]| Difference < RepExp_Stats[["LLSA"]],
             Label = if_else(Outlier, Sample, NA),
             across(-c(1, 6, 7), ~10 ^ .x),
-            across(-c(1, 6, 7),  \(x) signif(x, digits = 3))) %>% 
+            across(-c(1, 6, 7),  \(x) signif(x, digits = 3))) %>%
     rename(GeometricMean = Mean, Ratio = Difference)
 
   RepExp_Stats <- RepExp_Stats %>%
@@ -264,6 +264,9 @@ repexp.save <- function(report, path) {
 
 # Replicate-Experiment Example Analysis ------------------------------
 
-# UsrData <- read_csv('Data/RepExpPotencyShift.csv')
-# 
-# MSR_3_Shift_Report <- repexp.potency(UsrData)
+# # Load the Data
+# UsrData <- read_csv(file.path('Data', 'RepExpPotencyShift.csv'))
+# # Perform the Potency calculations
+# Report <- repexp.potency(UsrData)
+# # Save tables and figures to folder
+# repexp.save(Report, 'RepExpPotencyShift')
