@@ -163,7 +163,6 @@ r1r2plot <- function(Data, Stats) {
 }
 
 #Replicate-Experiment Efficacy --------------------------------------------
-  
 repexp.efficacy<- function(df) {
 
   RepExp_Data <- df %>%
@@ -234,22 +233,34 @@ repexp.efficacy<- function(df) {
 
 # Write report files ----------------------
 repexp.save <- function(report, path) {
-  
-  reportDir <- paste('Reports', path, sep = '/')
-  
-  # Create directory for report
-  
-  if (!dir.exists(reportDir)){
-    dir.create(reportDir)
-  } 
-  
-  write_csv(report$Data, file = paste(reportDir, 'CalcData.csv', sep = '/'))
-  
-  write_csv(report$Stats, file = paste(reportDir, 'Stats.csv', sep = '/'))
-  
-  ggsave(filename = paste(reportDir, 'MDPlot.png',sep = '/'), plot = report$MDPlot, height = 4, width = 6, units = 'in')
-  
-  ggsave(filename = paste(reportDir, 'CorrPlot.png',sep = '/'), plot = report$CorrPlot, height = 4, width = 4, units = 'in')
+
+  # Top-level all reports directory
+  all_reports_dir = file.path("Reports")
+
+  # If the directory does not exist, then create directory
+  if (!dir.exists(all_reports_dir)) {
+    dir.create(all_reports_dir)
+  }
+
+  # Individual report directory
+  report_dir <- file.path(all_reports_dir, path)
+
+  # If the directory does not exist, then create directory
+  if (!dir.exists(report_dir)) {
+    dir.create(report_dir)
+  }
+
+  # Save the dataframe with calculated data
+  write_csv(report[["Data"]], file = file.path(report_dir, "CalcData.csv"))
+
+  # Save the summary statistics
+  write_csv(report[["Stats"]], file = file.path(report_dir, "Stats.csv"))
+
+  # Save the Bland-Altman Figure
+  ggsave(filename = file.path(report_dir, "MDPlot.png"), plot = report[["MDPlot"]], height = 4, width = 6, units = 'in')
+
+  # Save the Correlation Figure
+  ggsave(filename = file.path(report_dir, "CorrPlot.png"), plot = report[["CorrPlot"]], height = 4, width = 4, units = 'in')
 }
 
 # Replicate-Experiment Example Analysis ------------------------------
