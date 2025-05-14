@@ -112,9 +112,9 @@ mdplot <- function(Data, Stats) {
     geom_hline(yintercept = Stats[["LDL"]], color = "mediumblue", linetype = "dashed") +
     geom_text(x = 1, y = Stats[["LDL"]], label = "Lower Difference Limit", color = "mediumblue", vjust = 1) +
     geom_hline(yintercept = Stats[["ULSA"]], color = "#D55E00", linetype = "dotdash") +
-    geom_text(x = 1, y = Stats[["ULSA"]], label = "Upper Limit of Aggreement", color = "#D55E00", vjust = -0.3) +
+    geom_text(x = 1, y = Stats[["ULSA"]], label = "Upper Limit of Agreement", color = "#D55E00", vjust = -0.3) +
     geom_hline(yintercept = Stats[["LLSA"]], color = "#D55E00", linetype = "dotdash") + 
-    geom_text(x = 1, y = Stats[["LLSA"]], label = "Lower Limit of Aggreement", color = "#D55E00", vjust = 1) +
+    geom_text(x = 1, y = Stats[["LLSA"]], label = "Lower Limit of Agreement", color = "#D55E00", vjust = 1) +
     theme_minimal() +
     labs(title = "Difference vs Mean Efficacy",
          subtitle = MSDLabel,
@@ -162,7 +162,7 @@ r1r2plot <- function(Data, Stats) {
 
 }
 
-#Replicate-Experiment Efficacy --------------------------------------------
+# Replicate-Experiment Efficacy --------------------------------------------
 repexp.efficacy<- function(df) {
 
   RepExp_Data <- df %>%
