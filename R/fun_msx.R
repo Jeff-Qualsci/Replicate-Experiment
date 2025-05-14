@@ -123,30 +123,30 @@ mdplot <- function(Data, Stats) {
 
 # Mean Ratio Plot
 mrplot <- function(Data, Stats) {
-    MSRLabel <- paste("MSR =", Stats$MSR)
-    
-    ggplot(Data, aes(x =  GeometricMean, y = Ratio)) +
-      geom_point(shape = Data$Outlier, size = 3) +
-      geom_text_repel(aes(label = Label), na.rm = TRUE) +
-      geom_hline(yintercept = Stats$MeanRatio, color = "mediumblue") +
-      geom_text(x = log10(max(Data$GeometricMean))-0.5, y = log10(Stats$MeanRatio), label = 'Mean Ratio', color = 'mediumblue', vjust = 1) +
-      geom_hline(yintercept = 1, color = "black") +
-      geom_hline(yintercept = Stats$URL, color = "mediumblue", linetype = "dashed") +
-      geom_text(x = log10(max(Data$GeometricMean))-0.5, y = log10(Stats$URL), label = "Upper Ratio Limit", color = "mediumblue", vjust = -0.3) +
-      geom_hline(yintercept = Stats$LRL, color = "mediumblue", linetype = "dashed") +
-      geom_text(x = log10(max(Data$GeometricMean))-0.5, y = log10(Stats$LRL), label = "Lower Ratio Limit", color = "mediumblue", vjust = 1) +
-      geom_hline(yintercept = Stats$ULSA, color = "#D55E00", linetype = "dotdash") +
-      geom_text(x = log10(max(Data$GeometricMean))-0.5, y = log10(Stats$ULSA), label = "Upper Limit of Aggreement", color = "#D55E00", vjust = -0.3) +
-      geom_hline(yintercept = Stats$LLSA, color = "#D55E00", linetype = "dotdash") + 
-      geom_text(x = log10(max(Data$GeometricMean))-0.5, y = log10(Stats$LLSA), label = "Lower Limit of Aggreement", color = "#D55E00", vjust = 1) +
-      theme_minimal() +
-      scale_x_continuous(trans='log10') + 
-      scale_y_continuous(trans='log10') +
-      labs(title="Potency Ratio vs Geometric Mean Potency",
-           subtitle = MSRLabel,
-           x ="Geometric Mean Potency", y = "Ratio")
-  }
-  
+  MSRLabel <- paste("MSR =", Stats[["MSR"]])
+
+  ggplot(Data, aes(x =  GeometricMean, y = Ratio)) +
+    geom_point(shape = Data[["Outlier"]], size = 3) +
+    geom_text_repel(aes(label = Label), na.rm = TRUE) +
+    geom_hline(yintercept = Stats[["MeanRatio"]], color = "mediumblue") +
+    geom_text(x = log10(max(Data[["GeometricMean"]]))-0.5, y = log10(Stats[["MeanRatio"]]), label = 'Mean Ratio', color = 'mediumblue', vjust = 1) +
+    geom_hline(yintercept = 1, color = "black") +
+    geom_hline(yintercept = Stats[["URL"]], color = "mediumblue", linetype = "dashed") +
+    geom_text(x = log10(max(Data[["GeometricMean"]]))-0.5, y = log10(Stats[["URL"]]), label = "Upper Ratio Limit", color = "mediumblue", vjust = -0.3) +
+    geom_hline(yintercept = Stats[["LRL"]], color = "mediumblue", linetype = "dashed") +
+    geom_text(x = log10(max(Data[["GeometricMean"]]))-0.5, y = log10(Stats[["LRL"]]), label = "Lower Ratio Limit", color = "mediumblue", vjust = 1) +
+    geom_hline(yintercept = Stats[["ULSA"]], color = "#D55E00", linetype = "dotdash") +
+    geom_text(x = log10(max(Data[["GeometricMean"]]))-0.5, y = log10(Stats[["ULSA"]]), label = "Upper Limit of Agreement", color = "#D55E00", vjust = -0.3) +
+    geom_hline(yintercept = Stats[["LLSA"]], color = "#D55E00", linetype = "dotdash") +
+    geom_text(x = log10(max(Data[["GeometricMean"]]))-0.5, y = log10(Stats[["LLSA"]]), label = "Lower Limit of Agreement", color = "#D55E00", vjust = 1) +
+    theme_minimal() +
+    scale_x_continuous(trans='log10') +
+    scale_y_continuous(trans='log10') +
+    labs(title = "Potency Ratio vs Geometric Mean Potency",
+         subtitle = MSRLabel,
+         x = "Geometric Mean Potency", y = "Ratio")
+}
+
 # R1R2 Plot - Run1/Run2 with correlation.
 r1r2plot <- function(Data, Stats) {
   ggplot(Data,aes(x = Exp1, y = Exp2)) +
@@ -187,49 +187,48 @@ repexp.efficacy<- function(df) {
 }
 
 # Replicate-Experiment Potency -------------------------------
-  
-  repexp.potency <- function(df) {
-    
-    RepExp_Data <- df %>% 
-      mutate(across(-Sample, log10),
-             Mean = (Exp1 + Exp2) / 2,
-             Difference = Exp1 - Exp2)
-    
-    RepExp_Stats <- repexp.stats(RepExp_Data)
-    
-    # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
-    
-    RepExp_Data <- RepExp_Data %>% 
-      mutate(Outlier = Difference > RepExp_Stats$ULSA | Difference < RepExp_Stats$LLSA,
-             Label = if_else(Outlier, Sample, NA),
-             across(-c(1, 6, 7), ~10 ^ .x),
-             across(-c(1, 6, 7),  \(x) signif(x, digits = 3))) %>% 
-      rename(GeometricMean = Mean, Ratio = Difference)
-    
-    RepExp_Stats <- RepExp_Stats %>% 
-      rename(MSR = MSD,
-             MeanRatio = MeanDiff,
-             URL = UDL,
-             LRL = LDL) %>% 
-      mutate(across(-c(1, 8, 9), ~10 ^ .x),
-             across(-c(1), \(x) signif(x, digits = 3)))
-    
-    # MSRn Table
-    n <- c(1:6)
-    s <- log10(RepExp_Stats$MSR) / 2
-    MSRn <- 10^((2 * s)/(sqrt(n)))
-    
-    MSRnTbl <- tibble(n, MSRn) %>% 
-      pivot_wider(names_from = n, names_prefix = 'n = ', values_from = MSRn)
-    
-    MeanRatioPlot <- mrplot(RepExp_Data, RepExp_Stats)
-    
-    R1R2CorrelationPlot <- r1r2plot(RepExp_Data,RepExp_Stats) +
-      scale_x_continuous(trans='log10') + 
-      scale_y_continuous(trans='log10')
-    
-    list(Data = RepExp_Data, Stats = RepExp_Stats, MSRnTbl = MSRnTbl, MDPlot = MeanRatioPlot, CorrPlot = R1R2CorrelationPlot)
-  }
+repexp.potency <- function(df) {
+
+  RepExp_Data <- df %>%
+    mutate(across(-Sample, log10),
+            Mean = (Exp1 + Exp2) / 2,
+            Difference = Exp1 - Exp2)
+
+  RepExp_Stats <- repexp.stats(RepExp_Data)
+
+  # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
+
+  RepExp_Data <- RepExp_Data %>%
+    mutate(Outlier = Difference > RepExp_Stats[["ULSA"]]| Difference < RepExp_Stats[["LLSA"]],
+            Label = if_else(Outlier, Sample, NA),
+            across(-c(1, 6, 7), ~10 ^ .x),
+            across(-c(1, 6, 7),  \(x) signif(x, digits = 3))) %>% 
+    rename(GeometricMean = Mean, Ratio = Difference)
+
+  RepExp_Stats <- RepExp_Stats %>%
+    rename(MSR = MSD,
+           MeanRatio = MeanDiff,
+           URL = UDL,
+           LRL = LDL) %>%
+    mutate(across(-c(1, 8, 9), ~10 ^ .x),
+           across(-c(1), \(x) signif(x, digits = 3)))
+
+  # MSRn Table
+  n <- c(1:6)
+  s <- log10(RepExp_Stats[["MSR"]]) / 2
+  MSRn <- 10^((2 * s)/(sqrt(n)))
+
+  MSRnTbl <- tibble(n, MSRn) %>%
+    pivot_wider(names_from = n, names_prefix = 'n = ', values_from = MSRn)
+
+  MeanRatioPlot <- mrplot(RepExp_Data, RepExp_Stats)
+
+  R1R2CorrelationPlot <- r1r2plot(RepExp_Data, RepExp_Stats) +
+    scale_x_continuous(trans='log10') +
+    scale_y_continuous(trans='log10')
+
+  list(Data = RepExp_Data, Stats = RepExp_Stats, MSRnTbl = MSRnTbl, MDPlot = MeanRatioPlot, CorrPlot = R1R2CorrelationPlot)
+}
 
 # Write report files ----------------------
 repexp.save <- function(report, path) {
