@@ -1,0 +1,4 @@
+- source: RepExpDoc.qmd
+  quarto-pub:
+    - id: 39ac2d2e-e436-4302-aaee-d5761b333234
+      url: https://jeff-qualsci.quarto.pub/replicate-experiment
