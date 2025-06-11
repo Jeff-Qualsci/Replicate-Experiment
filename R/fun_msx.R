@@ -196,8 +196,21 @@ repexp.potency <- function(df) {
 
   RepExp_Stats <- repexp.stats(RepExp_Data)
 
-  # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
+  # If the optional columns do not exist, add them to the df so that the functions work
+  if (!("toExclude" %in% names(RepExp_Data))) {
+    print('Note: toExclude column not found. Adding to DataFrame.')
+    RepExp_Data[["toExclude"]] <- NA
+  }
+  if (!("asControl" %in% names(RepExp_Data))) {
+    print('Note: asControl column not found. Adding to DataFrame.')
+    RepExp_Data[["asControl"]] <- NA
+  }
 
+  # Convert the toExclude and asControl columns to logical
+  RepExp_Data[["toExclude"]] <- as.logical(RepExp_Data[["toExclude"]])
+  RepExp_Data[["asControl"]] <- as.logical(RepExp_Data[["asControl"]])
+
+  # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
   RepExp_Data <- RepExp_Data %>%
     mutate(Outlier = Difference > RepExp_Stats[["ULSA"]]| Difference < RepExp_Stats[["LLSA"]],
             Label = if_else(Outlier, Sample, NA),
