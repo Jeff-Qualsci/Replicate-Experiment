@@ -88,7 +88,7 @@ repexp.stats <- function(df) {
             t = qt(0.975, n - 1),
             MeanDiff = mean(Difference),
             StdDev = sd(Difference),
-            MSD = 2 * t * StdDev,
+            MSD = 2 * StdDev,
             UDL = MeanDiff + (t * StdDev/sqrt(n)),
             LDL = MeanDiff - (t * StdDev/sqrt(n)),
             ULSA = MeanDiff + (3 * StdDev),
