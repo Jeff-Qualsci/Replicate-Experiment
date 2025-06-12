@@ -21,7 +21,9 @@ library(tidyverse)
 library(patchwork)
 library(gt)
 
-source('R/fun_msx.R')
+source(file.path("R", 'fun_msx.R'))
+
+reports_dir <- file.path("Reports")
 ```
 
 ## Introduction
@@ -357,7 +359,7 @@ effData
 #| label: tbl-effCalcData
 #| tbl-cap: Calculated Replicate-Experiment Data (sd constant).
 
-effCalcData <- read_csv('Webtool Output/MSD20Data320_EFF_2024-10-28 13_11_21.084501/MSD20Data320_EFF_OutputData_tbl.csv', col_types = 'cddddc') %>% 
+effCalcData <- read_csv(file.path(reports_dir, 'MSD20Data320_EFF_2024-10-28 13_11_21.084501', 'MSD20Data320_EFF_OutputData_tbl.csv'), col_types = 'cddddc') %>% 
   slice_head(n = 6) %>% 
   gt() %>% 
   tab_header(title = 'Calculated Data') %>% 
@@ -370,7 +372,7 @@ effCalcData
 
 Once the data have been uploaded, the Replicate-Experiment calculations are displayed as shown in @tbl-effCalcData. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019]***.***
 
-![Mean-Difference plot of efficacy data (sd constant).](Webtool%20Output/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_MSDFig_2024-10-28%2013_11_05.356727.png){#fig-effMDplot}
+![Mean-Difference plot of efficacy data (sd constant).](Reports/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_MSDFig_2024-10-28%2013_11_05.356727.png){#fig-effMDplot}
 
 The Bland-Altman plot (@fig-effMDplot) shows that the variation is consistent across the range of measured values with most of the difference values close to 0. The statistics in the plot are based on the distribution in @fig-diffdist.
 
@@ -378,7 +380,7 @@ The Bland-Altman plot (@fig-effMDplot) shows that the variation is consistent ac
 #| label: tbl-effStats
 #| tbl-cap: Efficacy Replicate-Experiment Statistics (sd constant).
 
-effStats <- read_csv('Webtool Output/MSD20Data320_EFF_2024-10-28 13_11_21.084501/MSD20Data320_EFF_Stats_tbl.csv', col_types = 'cdddddd') %>% 
+effStats <- read_csv(file.path(reports_dir, 'MSD20Data320_EFF_2024-10-28 13_11_21.084501', 'MSD20Data320_EFF_Stats_tbl.csv'), col_types = 'cdddddd') %>% 
   gt() %>% 
   tab_header(title = 'Efficacy Stats') %>% 
   fmt_scientific()
@@ -389,7 +391,7 @@ effStats
 
 The statistics for the Bland-Altman plot are shown in @tbl-effStats. There are 18 samples with differences outside of the agreement limits (95% CI) which are flagged and labelled in the report graphs. This is close to the expected value of 16 for 320 samples. The MSD is 21.1 and recall that MSD equals 2 standard deviations. It appears that all of the data are within about 3 standard deviations, so none of the flagged samples appear to be obvious outliers.
 
-![Efficacy Correlation plot (sd constant).](Webtool%20Output/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_CorrFig_2024-10-28%2013_11_05.357563.png){#fig-effcorrplot}
+![Efficacy Correlation plot (sd constant).](Reports/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_CorrFig_2024-10-28%2013_11_05.357563.png){#fig-effcorrplot}
 
 @fig-effcorrplot is a correlation plot of the two data sets with a unity reference line and Spearman's correlation coefficient. The data should overlay the equality reference line.
 
@@ -399,7 +401,7 @@ The calculated data, plots, and statistics can be downloaded for documentation a
 
 Often the variability in efficacy data varies across the dynamic range of an assay and is better represented by the CV as discussed in @sec-effVar. Unfortunately this violates a primary assumption in the analysis, making the replicate-experiment less useful. This is illustrated in the following example, where the CV is 10% across the assay range.
 
-![Mean Difference plot for an assay with 10% CV.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_MSDFig_2024-10-28%2013_05_38.837807.png){#fig-effMDcv}
+![Mean Difference plot for an assay with 10% CV.](Reports/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_MSDFig_2024-10-28%2013_05_38.837807.png){#fig-effMDcv}
 
 @fig-effMDcv shows the variability increasing as the efficacy values increase. This occurs in signal increase assays, where the raw data values for the vehicle controls are smaller than those for active samples. The pattern would be reversed for a signal decrease assay.
 
@@ -407,7 +409,7 @@ Often the variability in efficacy data varies across the dynamic range of an ass
 #| label: tbl-effCVStats
 #| tbl-cap: Efficacy (cv constant) Replicate-Experiment Statistics.
 
-effCvStats <- read_csv('Webtool Output/MSD_320_CV10_EFF_2024-10-28 13_10_15.440094/MSD_320_CV10_EFF_Stats_tbl.csv', col_types = 'cdddddd') %>% 
+effCvStats <- read_csv(file.path(reports_dir, 'MSD_320_CV10_EFF_2024-10-28 13_10_15.440094', 'MSD_320_CV10_EFF_Stats_tbl.csv'), col_types = 'cdddddd') %>% 
   gt() %>% 
   tab_header(title = 'Efficacy Stats (Constant cv') %>% 
   fmt_scientific()
@@ -417,7 +419,7 @@ effCvStats
 
 @tbl-effCVStats shows the statistics associated with @fig-effMDcv. Since the variability in the measurements is not constant across the dynamic range of the assay, it violates one of the assumptions of the Bland-Altman analysis, @sec-bland-altman-plot. Therefore these statistics are not meaningful.
 
-![Correlation plot for an assay with 10% CV.](Webtool%20Output/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_CorrFig_2024-10-28%2013_05_38.838566.png){#fig-effConstCVCorr}
+![Correlation plot for an assay with 10% CV.](Reports/MSD_320_CV10_EFF_2024-10-28%2013_10_15.440094/MSD_320_CV10_CorrFig_2024-10-28%2013_05_38.838566.png){#fig-effConstCVCorr}
 
 The same pattern is observed in the correlation plot, @fig-effConstCVCorr, with the spread between experiments increasing as the efficacy increases.
 
@@ -445,7 +447,7 @@ The data analysis is similar to that used with efficacy data, except that the po
 #| label: tbl-potCalcData
 #| tbl-cap: Calculated Replicate-Experiment Data.
 
-potCalcData <- read_csv('Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.293975/MSR3data32_POT_OutputData_tbl.csv', col_types = 'cddddc') %>% 
+potCalcData <- read_csv(file.path(reports_dir, 'MSR3data32_POT_2024-10-28 13_03_06.293975', 'MSR3data32_POT_OutputData_tbl.csv'), col_types = 'cddddc') %>% 
   slice_head(n = 6) %>% 
   gt() %>% 
   tab_header(title = 'Calculated Data') %>% 
@@ -456,7 +458,7 @@ potCalcData
 
 Once the data have been uploaded, the Replicate-Experiment calculations are displayed, as shown in @tbl-potCalcData. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The Geometric Mean and the Ratio represent the mean and difference values for the log(Potency) data after they have been transformed back to the original linear scale. Recall that $log(A) - log(B) = log(A/B)$, so the difference between two log values becomes a ratio, when anti-logged. Similarly, the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019].
 
-![Mean-Ratio plot of potency data.](Webtool%20Output/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_MSRFig_2024-10-28%2013_02_38.772112.png){#fig-potMD}
+![Mean-Ratio plot of potency data.](Reports/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_MSRFig_2024-10-28%2013_02_38.772112.png){#fig-potMD}
 
 The Bland-Altman plot, @fig-potMD, for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around 1 with about half of the data on either side of the center. The variability is also evenly distributed across the range of x values.
 
@@ -464,7 +466,7 @@ The Bland-Altman plot, @fig-potMD, for potency data uses the geometric mean valu
 #| label: tbl-potStats
 #| tbl-cap: Potency Replicate-Experiment Statistics.
 
-potStats <- read_csv('Webtool Output/MSR3data32_POT_2024-10-28 13_03_06.293975/MSR3data32_POT_Stats_tbl.csv', col_types = 'cdddddd')
+potStats <- read_csv(file.path(reports_dir, 'MSR3data32_POT_2024-10-28 13_03_06.293975', 'MSR3data32_POT_Stats_tbl.csv'), col_types = 'cdddddd')
 
 potStatsTbl <- potStats %>% 
   gt() %>% 
@@ -476,7 +478,7 @@ potStatsTbl
 
 The corresponding statistics are shown in @tbl-potStats. There is only a single value labelled as an outlier in the Bland-Altman plot. This is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
 
-![Potency Correlation plot.](Webtool%20Output/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_CorrFig_2024-10-28%2013_02_38.773078.png){#fig-potCorr}
+![Potency Correlation plot.](Reports/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_CorrFig_2024-10-28%2013_02_38.773078.png){#fig-potCorr}
 
 @fig-potCorr is a correlation plot of the two data sets with a unity reference line and the Spearman correlation. The data should overlay the equality reference line.
 
@@ -509,13 +511,13 @@ MSRnTbl <- tibble(n, MSRn) %>%
 
 Early in a project, it may be a struggle to identify a sufficient number of validated, active samples to perform a Replicate-Experiment. Here is an example where there are only 5 unique samples. Unfortunately, this low sample number does not provide enough statistical power to obtain a good estimate of the assay's variability, so the Ratio Limits and MSR can appear to be greater than their true values.
 
-![Mean Ratio plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_MSRFig_2024-10-28%2013_04_13.224078.png){#fig-baFewSmplPlot}
+![Mean Ratio plot.](Reports/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_MSRFig_2024-10-28%2013_04_13.224078.png){#fig-baFewSmplPlot}
 
 ```{r}
 #| label: tbl-fewSmplStats
 #| tbl-cap: Replicate-Experiment Statistics.
 
-fewSmplStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.699411/FewSmpl_POT_Stats_tbl.csv', col_types = 'cdddddd') %>% 
+fewSmplStats <- read_csv(file.path(reports_dir, 'FewSmplRep_POT_2024-10-28 13_04_59.699411', 'FewSmpl_POT_Stats_tbl.csv'), col_types = 'cdddddd') %>% 
   gt() %>% 
   tab_header(title = 'Potency Stats') %>% 
   fmt_scientific()
@@ -525,13 +527,13 @@ fewSmplStats
 
 The Bland-Altman plot, @fig-baFewSmplPlot, and the associated statistics, @tbl-fewSmplStats, illustrate the problem. While the MSR appears to be high, we also see that n is only 5, so there is probably not enough data to provide a good estimate of the MSR.
 
-![Correlation Plot](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_CorrFig_2024-10-28%2013_04_13.22479.png){#fig-fewCorr}
+![Correlation Plot](Reports/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmpl_CorrFig_2024-10-28%2013_04_13.22479.png){#fig-fewCorr}
 
 The correlation plot (@fig-fewCorr) also shows that the correlation line does not match the identity line and has more uncertainty.
 
 Fortunately, there is a simple solution to this problem. Each sample can be replicated multiple times on the plates. The replicate dose-response curves are then analyzed as if they were from different samples. Ideally, these replicate samples should be prepared independently, as if they were unique compounds with their own dilution series. In this example, the 5 unique samples were each replicated 6 times (e.g. sample 1 becomes 1A, 1B, 1C ...). This produces 30 pairs of potency values for the analysis.
 
-![Replicated samples Mean Ratio plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_MSRFig_2024-10-28%2013_04_44.580655.png){#fig-baFewSmplsRepsPlot}
+![Replicated samples Mean Ratio plot.](Reports/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_MSRFig_2024-10-28%2013_04_44.580655.png){#fig-baFewSmplsRepsPlot}
 
 The Bland-Altman plot (@fig-baFewSmplsRepsPlot) now shows 5 clusters of difference values corresponding to the 5 replicated samples.
 
@@ -539,7 +541,7 @@ The Bland-Altman plot (@fig-baFewSmplsRepsPlot) now shows 5 clusters of differen
 #| label: tbl-fewSmplRepStats
 #| tbl-cap: Replicate-Experiment Statistics.
 
-fewSmplRepStats <- read_csv('Webtool Output/FewSmplRep_POT_2024-10-28 13_04_59.699411/FewSmplRep_POT_Stats_tbl.csv', col_types = 'cdddddd') %>% 
+fewSmplRepStats <- read_csv(file.path(reports_dir, 'FewSmplRep_POT_2024-10-28 13_04_59.699411', 'FewSmplRep_POT_Stats_tbl.csv'), col_types = 'cdddddd') %>% 
   gt() %>% 
   tab_header(title = 'Potency Stats') %>% 
   fmt_scientific()
@@ -549,7 +551,7 @@ fewSmplRepStats
 
 The associated statistics, @tbl-fewSmplRepStats, show a much lower MSR.
 
-![Replicated samples correlation plot.](Webtool%20Output/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_CorrFig_2024-10-28%2013_04_44.581414.png){#fig-repCorr}
+![Replicated samples correlation plot.](Reports/FewSmplRep_POT_2024-10-28%2013_04_59.699411/FewSmplRep_CorrFig_2024-10-28%2013_04_44.581414.png){#fig-repCorr}
 
 Similar clustering is observed in the correlation plot, @fig-repCorr. While it is easy to identify the clusters due to the sample replication in the graphs, the improvement in statistical power from n=30 instead of n = 5 provides a much better estimate of the true assay variability. Both the MSR and the ratio limits are significantly lower.
 
@@ -561,7 +563,7 @@ Systematic differences between two experiments could be indicated when the mean 
 #| label: tbl-potShiftData
 #| tbl-cap: Replicate-Experiment Potency Shift Data.
 
-potShiftData <- read_csv('Webtool Output/MSR3data32shift_POT_2025-02-13 16_20_47.322363/MSR3data32shift_POT_OutputData_tbl.csv', col_types = 'cdddddd') %>% 
+potShiftData <- read_csv(file.path(reports_dir, 'MSR3data32shift_POT_2025-02-13 16_20_47.322363', 'MSR3data32shift_POT_OutputData_tbl.csv'), col_types = 'cdddddd') %>% 
   slice_head(n = 6) %>% 
   gt() %>% 
   tab_header(title = 'Potency Shift Data.') %>% 
@@ -572,7 +574,7 @@ potShiftData
 
 The data in @tbl-potShiftData is used to illustrate this situation.
 
-![Systematic error Bland-Altman plot.](Webtool%20Output/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_MSRFig_2025-02-13%2016_20_14.952696.png){#fig-potShiftBAPlot}
+![Systematic error Bland-Altman plot.](Reports/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_MSRFig_2025-02-13%2016_20_14.952696.png){#fig-potShiftBAPlot}
 
 @fig-potShiftBAPlot shows the black reference line (Ratio = 1) is clearly outside of the observed Ratio Limits around the blue Center Line for the data. This indicates that there is a systematic shift in the data between the first and second measurements of the compound potencies.
 
@@ -580,7 +582,7 @@ The data in @tbl-potShiftData is used to illustrate this situation.
 #| label: tbl-potShiftStats
 #| tbl-cap: Potency Shift Replicate-Experiment Statistics.
 
-potShiftStats <- read_csv('Webtool Output/MSR3data32shift_POT_2025-02-13 16_20_47.322363/MSR3data32shift_POT_Stats_tbl.csv')
+potShiftStats <- read_csv(file.path(reports_dir, 'MSR3data32shift_POT_2025-02-13 16_20_47.322363', 'MSR3data32shift_POT_Stats_tbl.csv'))
 
 potShiftStats <- potStats %>% 
   gt() %>% 
@@ -592,7 +594,7 @@ potShiftStats
 
 The associated statistics, @tbl-potShiftStats, also shows that the expected ratio of 1 is not within the ratio limits.
 
-![Systematic Shift Correlation Plot.](Webtool%20Output/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_CorrFig_2025-02-13%2016_20_14.953631.png){#fig-potShiftCorrPlot}
+![Systematic Shift Correlation Plot.](Reports/MSR3data32shift_POT_2025-02-13%2016_20_47.322363/MSR3data32shift_CorrFig_2025-02-13%2016_20_14.953631.png){#fig-potShiftCorrPlot}
 
 The correlation plot, @fig-potShiftCorrPlot, also shows separation between the reference identity line and the correlation line.
 

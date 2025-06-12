@@ -88,7 +88,7 @@ repexp.stats <- function(df) {
             t = qt(0.975, n - 1),
             MeanDiff = mean(Difference),
             StdDev = sd(Difference),
-            MSD = 2 * t * StdDev,
+            MSD = 2 * StdDev,
             UDL = MeanDiff + (t * StdDev/sqrt(n)),
             LDL = MeanDiff - (t * StdDev/sqrt(n)),
             ULSA = MeanDiff + (3 * StdDev),
@@ -166,18 +166,36 @@ r1r2plot <- function(Data, Stats) {
 repexp.efficacy<- function(df) {
 
   RepExp_Data <- df %>%
-    mutate(Mean = (Exp1 + Exp2) / 2,
-            Difference = Exp1 - Exp2)
+    mutate(
+      Mean = (Exp1 + Exp2) / 2,
+      Difference = Exp1 - Exp2
+    )
 
   RepExp_Stats <- repexp.stats(RepExp_Data) %>%
-    mutate(across(-n, \(x) signif(x, digits = 3)))
+    mutate(across(c(MeanDiff, MSD, UDL, LDL, ULSA, LLSA, r, r2), \(x) signif(x, digits = 3)))
+
+  # If the optional columns do not exist, add them to the df so that the functions work
+  if (!("toExclude" %in% names(RepExp_Data))) {
+    message('Note: toExclude column not found. Adding to DataFrame.')
+    RepExp_Data[["toExclude"]] <- NA
+  }
+  if (!("asControl" %in% names(RepExp_Data))) {
+    message('Note: asControl column not found. Adding to DataFrame.')
+    RepExp_Data[["asControl"]] <- NA
+  }
 
   # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
-
   RepExp_Data <- RepExp_Data %>% 
-    mutate(across(-Sample,  \(x) signif(x, digits = 3)),
-            Outlier = Difference > RepExp_Stats[["ULSA"]] | Difference < RepExp_Stats[["LLSA"]],
-            Label = if_else(Outlier, Sample, NA))
+    mutate(
+      Outlier = Difference > RepExp_Stats[["ULSA"]] | Difference < RepExp_Stats[["LLSA"]],
+      Label = if_else(Outlier, Sample, NA),
+      Class = case_when(
+        (toExclude) ~ "Excluded",
+        (asControl) ~ "Control",
+        (Outlier == 1) ~ "Outlier"
+      ),
+      across(c(Exp1, Exp2, Mean, Difference),  \(x) signif(x, digits = 3))
+      )
 
   MeanDifferencePlot <- mdplot(RepExp_Data, RepExp_Stats)
 
@@ -190,19 +208,38 @@ repexp.efficacy<- function(df) {
 repexp.potency <- function(df) {
 
   RepExp_Data <- df %>%
-    mutate(across(-Sample, log10),
-            Mean = (Exp1 + Exp2) / 2,
-            Difference = Exp1 - Exp2)
+    mutate(
+      Exp1 = log10(Exp1),
+      Exp2 = log10(Exp2),
+      Mean = (Exp1 + Exp2) / 2,
+      Difference = Exp1 - Exp2
+    )
 
   RepExp_Stats <- repexp.stats(RepExp_Data)
 
-  # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
+  # If the optional columns do not exist, add them to the df so that the functions work
+  if (!("toExclude" %in% names(RepExp_Data))) {
+    message('Note: toExclude column not found. Adding to DataFrame.')
+    RepExp_Data[["toExclude"]] <- NA
+  }
+  if (!("asControl" %in% names(RepExp_Data))) {
+    message('Note: asControl column not found. Adding to DataFrame.')
+    RepExp_Data[["asControl"]] <- NA
+  }
 
+  # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
   RepExp_Data <- RepExp_Data %>%
-    mutate(Outlier = Difference > RepExp_Stats[["ULSA"]]| Difference < RepExp_Stats[["LLSA"]],
-            Label = if_else(Outlier, Sample, NA),
-            across(-c(1, 6, 7), ~10 ^ .x),
-            across(-c(1, 6, 7),  \(x) signif(x, digits = 3))) %>%
+    mutate(
+      Outlier = Difference > RepExp_Stats[["ULSA"]] | Difference < RepExp_Stats[["LLSA"]],
+      Label = if_else(Outlier, Sample, NA),
+      Class = case_when(
+        (toExclude) ~ "Excluded",
+        (asControl) ~ "Control",
+        (Outlier == 1) ~ "Outlier"
+      ),
+      across(c(Exp1, Exp2, Mean, Difference), ~10 ^ .x),
+      across(c(Exp1, Exp2, Mean, Difference), \(x) signif(x, digits = 3))
+    ) %>%
     rename(GeometricMean = Mean, Ratio = Difference)
 
   RepExp_Stats <- RepExp_Stats %>%
@@ -210,8 +247,8 @@ repexp.potency <- function(df) {
            MeanRatio = MeanDiff,
            URL = UDL,
            LRL = LDL) %>%
-    mutate(across(-c(1, 8, 9), ~10 ^ .x),
-           across(-c(1), \(x) signif(x, digits = 3)))
+    mutate(across(c(MeanRatio, MSR, URL, LRL, ULSA, LLSA), ~10 ^ .x),
+           across(c(MeanRatio, MSR, URL, LRL, ULSA, LLSA, r, r2), ~signif(.x, digits = 3)))
 
   # MSRn Table
   n <- c(1:6)
