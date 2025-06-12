@@ -219,11 +219,11 @@ repexp.potency <- function(df) {
 
   # If the optional columns do not exist, add them to the df so that the functions work
   if (!("toExclude" %in% names(RepExp_Data))) {
-    print('Note: toExclude column not found. Adding to DataFrame.')
+    message('Note: toExclude column not found. Adding to DataFrame.')
     RepExp_Data[["toExclude"]] <- NA
   }
   if (!("asControl" %in% names(RepExp_Data))) {
-    print('Note: asControl column not found. Adding to DataFrame.')
+    message('Note: asControl column not found. Adding to DataFrame.')
     RepExp_Data[["asControl"]] <- NA
   }
 
