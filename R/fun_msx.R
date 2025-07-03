@@ -81,7 +81,6 @@ repexp.stats <- function(df) {
   rSpearman <- cor(x = df[["Exp1"]], y = df[["Exp2"]], method = "spearman")
 
   summarise(df,
-<<<<<<< HEAD
             n = n(),
             t = qt(0.975, n - 1),
             MeanDiff = mean(Difference),
@@ -89,26 +88,8 @@ repexp.stats <- function(df) {
             MSD = 2 * StdDev,
             UDL = MeanDiff + (t * StdDev/sqrt(n)),
             LDL = MeanDiff - (t * StdDev/sqrt(n)),
-            ULSA = MeanDiff + (3 * StdDev),
-            LLSA = MeanDiff- (3 * StdDev)) %>%
-    mutate(r = rSpearman,
-           r2 = r ^ 2) %>%
-=======
-    n = n(),
-    t = qt(0.975, n - 1),
-    MeanDiff = mean(Difference),
-    StdDev = sd(Difference),
-    MSD = 2 * StdDev,
-    UDL = MeanDiff + (t * StdDev / sqrt(n)),
-    LDL = MeanDiff - (t * StdDev / sqrt(n)),
-    ULSA = MeanDiff + (3 * StdDev),
-    LLSA = MeanDiff - (3 * StdDev)
-  ) %>%
-    mutate(
-      r = rSpearman,
-      r2 = r^2
-    ) %>%
->>>>>>> d60eca8 (before Dante's pull request 6/11/2025)
+            ULSA = MeanDiff + (2 * StdDev),
+            LLSA = MeanDiff- (2 * StdDev)) %>%
     select(-t, -StdDev)
 }
 
@@ -203,7 +184,6 @@ repexp.efficacy <- function(df) {
   }
 
   # Flag data pairs with potential outliers (MeasDiff outside of limits of agreement)
-<<<<<<< HEAD
   RepExp_Data <- RepExp_Data %>% 
     mutate(
       Outlier = Difference > RepExp_Stats[["ULSA"]] | Difference < RepExp_Stats[["LLSA"]],
@@ -215,14 +195,6 @@ repexp.efficacy <- function(df) {
       ),
       across(c(Exp1, Exp2, Mean, Difference),  \(x) signif(x, digits = 3))
       )
-=======
-
-  RepExp_Data <- RepExp_Data %>%
-    mutate(across(-Sample, \(x) signif(x, digits = 3)),
-      Outlier = Difference > RepExp_Stats[["ULSA"]] | Difference < RepExp_Stats[["LLSA"]],
-      Label = if_else(Outlier, Sample, NA)
-    )
->>>>>>> d60eca8 (before Dante's pull request 6/11/2025)
 
   MeanDifferencePlot <- mdplot(RepExp_Data, RepExp_Stats)
 
