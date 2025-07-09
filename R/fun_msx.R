@@ -178,6 +178,14 @@ repexp.efficacy <- function(df) {
   RepExp_Stats <- repexp.stats(RepExp_Data) %>%
     mutate(across(c(MeanDiff, MSD, UDL, LDL, ULSA, LLSA, r, r2), \(x) signif(x, digits = 3)))
 
+  # MSDn Table
+  n <- c(1:6)
+  s <- RepExp_Stats[["MSD"]] / 2
+  MSDn <- (2 * s) / (sqrt(n))
+
+  MSDnTbl <- tibble(n, MSDn) %>%
+    pivot_wider(names_from = n, names_prefix = "n = ", values_from = MSDn)
+
   # If the optional columns do not exist, add them to the df so that the functions work
   if (!("toExclude" %in% names(RepExp_Data))) {
     message("Note: toExclude column not found. Adding to DataFrame.")
@@ -205,7 +213,7 @@ repexp.efficacy <- function(df) {
 
   R1R2CorrelationPlot <- r1r2plot(RepExp_Data, RepExp_Stats)
 
-  list(Data = RepExp_Data, Stats = RepExp_Stats, MDPlot = MeanDifferencePlot, CorrPlot = R1R2CorrelationPlot)
+  list(Data = RepExp_Data, Stats = RepExp_Stats, MSDnTbl = MSDnTbl, MDPlot = MeanDifferencePlot, CorrPlot = R1R2CorrelationPlot)
 }
 
 # Replicate-Experiment Potency -------------------------------
@@ -304,12 +312,3 @@ repexp.save <- function(report, path) {
   # Save the Correlation Figure
   ggsave(filename = file.path(report_dir, "CorrPlot.png"), plot = report[["CorrPlot"]], height = 4, width = 4, units = "in")
 }
-
-# Replicate-Experiment Example Analysis ------------------------------
-
-# # Load the Data
-# UsrData <- read_csv(file.path('Data', 'RepExpPotencyShift.csv'))
-# # Perform the Potency calculations
-# Report <- repexp.potency(UsrData)
-# # Save tables and figures to folder
-# repexp.save(Report, 'RepExpPotencyShift')
