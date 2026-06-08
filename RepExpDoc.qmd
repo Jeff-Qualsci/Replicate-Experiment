@@ -476,7 +476,7 @@ potStatsTbl <- potStats %>%
 potStatsTbl
 ```
 
-The corresponding statistics are shown in @tbl-potStats. There is only a single value labelled as an outlier in the Bland-Altman plot. This is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
+The corresponding statistics are shown in @tbl-potStats. There is only a single value labelled as Outside LsA in the Bland-Altman plot. This is consistent with a data set of this size. The ratio for this sample, while outside of the ratio limits, is close and thus not an obvious outlier.
 
 ![Potency Correlation plot.](Reports/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_CorrFig_2024-10-28%2013_02_38.773078.png){#fig-potCorr}
 
@@ -497,7 +497,7 @@ s <- log10(potStats$MSR) / 2
 MSRn <- 10^((2 * s)/(sqrt(n)))
 
 MSRnTbl <- tibble(n, MSRn) %>% 
-  pivot_wider(names_from = n, names_prefix = 'n = ', values_from = MSRn) %>% 
+  pivot_wider(names_from = n, names_prefix = 'N = ', values_from = MSRn) %>% 
   gt() %>% 
   fmt_number(decimals = 2)
   
@@ -506,6 +506,8 @@ MSRnTbl <- tibble(n, MSRn) %>%
 ```
 
 @tbl-MSRn shows the calculated MSR for different numbers of independent replicates. The value of n indicates the number of different experiments each compound should be tested in to reach the calculated MSR. The MSR can be decreased significantly, if every sample is tested 2 or 3 times.
+
+The Replicate-Experiment MSR applies to potency results for samples that are tested once in a single experiment per sample. The MSR can be decreased significantly if every sample is tested 2 or 3 times, and the geomean potency is used to compare compounds. Both compounds being compared have to have at least "N" repeats each (i.e., "N" = the compound with fewest repeats). The MSR of Geometric Mean applies when compounds are compared using the geometric mean IC50 per compound (averaged across experiments). This calculation is only valid if the results are obtained from independent experiments and not replicates within the same experiment. The calculated MSR of Geometric Mean is the smallest ratio of the geometric mean IC50s between two compounds that is statistically discernable (a.k.a, statistically significant).
 
 ### Too Few Samples
 
