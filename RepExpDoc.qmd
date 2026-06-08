@@ -169,7 +169,8 @@ potData <- tibble(Pot, logPot) %>%
 
 potBounds <- potData %>% 
   group_by(Scale) %>% 
-  summarise(Rng = range(Concentration),
+  summarise(Min = min(Concentration),
+            Max = max(Concentration),
             Mean = max(Concentration),
             SD = sd(Concentration)) %>% 
   ungroup()
