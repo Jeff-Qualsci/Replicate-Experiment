@@ -203,7 +203,7 @@ repexp.efficacy <- function(df) {
       Class = case_when(
         (toExclude) ~ "Excluded",
         (asControl) ~ "Control",
-        (Outlier == 1) ~ "Outside LsA"
+        (Outlier == 1) ~ "Outlier"
       ),
       across(c(Exp1, Exp2, Mean, Difference), \(x) signif(x, digits = 3))
     )
@@ -211,11 +211,6 @@ repexp.efficacy <- function(df) {
   MeanDifferencePlot <- mdplot(RepExp_Data, RepExp_Stats)
 
   R1R2CorrelationPlot <- r1r2plot(RepExp_Data, RepExp_Stats)
-
-  RepExp_Stats <- rename(RepExp_Stats,
-    `Mean Difference` = MeanDiff,
-    `r (Rank)` = r
-  )
 
   list(Data = RepExp_Data, Stats = RepExp_Stats, MSx_Tbl = MSD_Tbl, MDPlot = MeanDifferencePlot, CorrPlot = R1R2CorrelationPlot)
 }
@@ -262,7 +257,7 @@ repexp.potency <- function(df) {
       MSR = MSD,
       MeanRatio = MeanDiff,
       URL = UDL,
-      LRL = LDL,
+      LRL = LDL
     ) %>%
     mutate(
       across(c(MeanRatio, MSR, LRL, URL, LLA, ULA), ~ 10^.x),
@@ -282,11 +277,6 @@ repexp.potency <- function(df) {
   R1R2CorrelationPlot <- r1r2plot(RepExp_Data, RepExp_Stats) +
     scale_x_continuous(trans = "log10") +
     scale_y_continuous(trans = "log10")
-
-  RepExp_Stats <- rename(RepExp_Stats,
-    `Mean Ratio` = MeanRatio,
-    `r (Rank)` = r
-  )
 
   list(Data = RepExp_Data, Stats = RepExp_Stats, MSx_Tbl = MSR_Tbl, MDPlot = MeanRatioPlot, CorrPlot = R1R2CorrelationPlot)
 }
@@ -316,7 +306,7 @@ repexp.save <- function(report, path) {
   write_csv(report[["Stats"]], file = file.path(report_dir, "Stats.csv"))
 
   # Save the MSx table
-  write_csv(report[["MSxTbl"]], file = file.path(report_dir, "MSxTbl.csv"))
+  write_csv(report[["MSx_Tbl"]], file = file.path(report_dir, "MSxTbl.csv"))
 
   # Save the Bland-Altman Figure
   ggsave(filename = file.path(report_dir, "MDPlot.png"), plot = report[["MDPlot"]], height = 4, width = 6, units = "in")
