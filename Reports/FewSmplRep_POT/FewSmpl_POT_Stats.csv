@@ -1,2 +1,2 @@
-n,MeanRatio,MSR,Upper Ratio Limit,Lower Ratio Limit,Upper Agreement Limit,Lower Agreement Limit
-5,1.16e+00,1.01e+01,4.88e+00,2.75e-01,2.89e+01,4.64e-02
+n,Mean Ratio,MSR,LRL,URL,LLA,ULA,r (Rank)
+5,1.16,10.1,0.275,4.88,0.114,11.7,1
