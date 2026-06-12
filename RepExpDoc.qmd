@@ -80,7 +80,7 @@ The statistical analysis assumes that any measurement errors are normally distri
 
 4.  Calculate limits of agreement $LSAs = \bar{d}\pm2sd$. Most of the individual compound differences (\~95%) should fall within these limits.
 
-5.  Samples outside the agreement limits are flagged as outliers. Since these values are 2sd outliers, it is expected that 5% of the data to be flagged if the data follow a normal distribution. This is not a flag for automatically excluding data.
+5.  Samples outside the agreement limits are flagged. For potency data these are labelled "Outside LsA" (Outside the Limits of Agreement) and for efficacy data they are labelled "Outlier". Since these values are 2sd outliers, it is expected that 5% of the data to be flagged if the data follow a normal distribution. This is not a flag for automatically excluding data.
 
 6.  Calculate the Minimum Significant Difference $MSD = 2sd$. This is the minimum difference between two compounds that is statistically significant.
 
@@ -171,8 +171,8 @@ potBounds <- potData %>%
   group_by(Scale) %>% 
   summarise(Min = min(Concentration),
             Max = max(Concentration),
-            Mean = max(Concentration),
-            SD = sd(Concentration)) %>% 
+            Mean = mean(Concentration),
+            SD = sd(Concentration)) %>%
   ungroup()
 
 logNormPlot <- ggplot(filter(potData, Scale == 'Pot'), aes(x = Concentration)) +
@@ -249,31 +249,31 @@ A histogram of the difference values for each pair of samples is centered around
 mdStats <- repexp.stats(mdData) %>% 
   mutate(across(-n, \(x) signif(x, digits = 3)))
 
-dataCols <- c('Difference', 'MeanDiff', 'Reference', 'UDL', 'LDL', 'ULSA', 'LLSA')
+dataCols <- c('Difference', 'MeanDiff', 'Reference', 'UDL', 'LDL', 'ULA', 'LLA')
 
 plotData <- mdData %>% 
   select(!starts_with('Exp')) %>% 
-  mutate(Class = if_else(Difference > mdStats$ULSA | Difference < mdStats$LLSA, 'flagged', NA),
+  mutate(Class = if_else(Difference > mdStats$ULA | Difference < mdStats$LLA, 'flagged', NA),
          MeanDiff = mdStats$MeanDiff,
          Reference = 0,
          UDL = mdStats$UDL,
          LDL = mdStats$LDL,
-         ULSA = mdStats$ULSA,
-         LLSA = mdStats$LLSA) %>% 
+         ULA = mdStats$ULA,
+         LLA = mdStats$LLA) %>% 
   pivot_longer(cols = all_of(dataCols), values_to = 'DataVal', names_to = 'DataType') %>% 
-  mutate(Lines = if_else(str_ends(DataType,'SA'), 'Agreement Limit',
+  mutate(Lines = if_else(str_ends(DataType,'LA'), 'Agreement Limit',
                              if_else(str_ends(DataType,'L'), 'Difference Limit', DataType, NA)))
 
 mdConceptPlot <- ggplot(mdData, aes(x = Mean, y = Difference)) +
   annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$LDL, ymax = mdStats$UDL,
            fill = "blue", linetype = 0) +
-  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$UDL, ymax = mdStats$ULSA,
+  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$UDL, ymax = mdStats$ULA,
            fill = "green", linetype = 0) +
-  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$LLSA, ymax = mdStats$LDL,
+  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$LLA, ymax = mdStats$LDL,
            fill = "green", linetype = 0) +
-  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$ULSA, ymax = 90,
+  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = mdStats$ULA, ymax = 90,
            fill = "red", linetype = 0) +
-  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = -90, ymax = mdStats$LLSA,
+  annotate(geom = "rect", xmin = -50, xmax = 150, ymin = -90, ymax = mdStats$LLA,
            fill = "red", linetype = 0) +
   geom_point() +
   coord_fixed(ratio = 0.6, xlim = c(-50, 150), ylim = c(-90, 90), expand = FALSE) +
@@ -327,7 +327,7 @@ corrPlot
 
 ```
 
-@fig-corrPlot shows the correlation between the two experiments using Spearman's method. This linear correlation is appropriate for efficacy data and log transformed potency data. To view potency data in the original concentration units, both the x-axis and y-axis should be log transformed to see a linear correlation.
+@fig-corrPlot shows the correlation between the two experiments using Spearman's method. This rank correlation is appropriate for efficacy data and log transformed potency data. To view potency data in the original concentration units, both the x-axis and y-axis should be log transformed to see a rank correlation.
 
 ## Examples
 
@@ -371,11 +371,11 @@ effCalcData
 
 ```
 
-Once the data have been uploaded, the Replicate-Experiment calculations are displayed as shown in @tbl-effCalcData. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019]***.***
+Once the data have been uploaded, the Replicate-Experiment calculations are displayed as shown in @tbl-effCalcData. This data now includes the Mean and Difference values as well as Class, in addition to the original data. The Class column identifies samples that fall outside the agreement limits with the label "Outlier". This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019]***.***
 
 ![Mean-Difference plot of efficacy data (sd constant).](Reports/MSD20Data320_EFF_2024-10-28%2013_11_21.084501/MSD20Data320_MSDFig_2024-10-28%2013_11_05.356727.png){#fig-effMDplot}
 
-The Bland-Altman plot (@fig-effMDplot) shows that the variation is consistent across the range of measured values with most of the difference values close to 0. The statistics in the plot are based on the distribution in @fig-diffdist.
+The Bland-Altman plot (@fig-effMDplot) shows that the variation is consistent across the range of measured values with most of the difference values close to the reference line at 0. The statistics in the plot are based on the distribution in @fig-diffdist.
 
 ```{r}
 #| label: tbl-effStats
@@ -457,11 +457,11 @@ potCalcData <- read_csv(file.path(reports_dir, 'MSR3data32_POT_2024-10-28 13_03_
 potCalcData
 ```
 
-Once the data have been uploaded, the Replicate-Experiment calculations are displayed, as shown in @tbl-potCalcData. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The Geometric Mean and the Ratio represent the mean and difference values for the log(Potency) data after they have been transformed back to the original linear scale. Recall that $log(A) - log(B) = log(A/B)$, so the difference between two log values becomes a ratio, when anti-logged. Similarly, the mean of logs becomes a geometric mean when anti-logged. The Class column is used to identify flagged samples that fall outside the agreement limits. This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019].
+Once the data have been uploaded, the Replicate-Experiment calculations are displayed, as shown in @tbl-potCalcData. This data now includes the Geometric Mean and Ratio values as well as Class, in addition to the original data. The Geometric Mean and the Ratio represent the mean and difference values for the log(Potency) data after they have been transformed back to the original linear scale. Recall that $log(A) - log(B) = log(A/B)$, so the difference between two log values becomes a ratio, when anti-logged. Similarly, the mean of logs becomes a geometric mean when anti-logged. The Class column identifies samples that fall outside the Limits of Agreement with the label "Outside LsA". This table is fully sortable in the web tool. ***Note. While the input data may contain any number of digits after the decimal point and are used for the analysis, calculated values and statistics are displayed to 3 significant digits*** [@dahlin2019].
 
 ![Mean-Ratio plot of potency data.](Reports/MSR3data32_POT_2024-10-28%2013_03_06.293975/MSR3data32_MSRFig_2024-10-28%2013_02_38.772112.png){#fig-potMD}
 
-The Bland-Altman plot, @fig-potMD, for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around 1 with about half of the data on either side of the center. The variability is also evenly distributed across the range of x values.
+The Bland-Altman plot, @fig-potMD, for potency data uses the geometric mean value of each data pair on the x-axis with the ratio between the potencies represented on the y-axis. Both axes are plotted on the log scale, as described in @sec-potency-data. The data points are centered around the reference line at ratio = 1 with about half of the data on either side of the center. The variability is also evenly distributed across the range of x values.
 
 ```{r}
 #| label: tbl-potStats
@@ -587,12 +587,12 @@ The data in @tbl-potShiftData is used to illustrate this situation.
 
 potShiftStats <- read_csv(file.path(reports_dir, 'MSR3data32shift_POT_2025-02-13 16_20_47.322363', 'MSR3data32shift_POT_Stats_tbl.csv'))
 
-potShiftStats <- potStats %>% 
+potShiftStatsTbl <- potShiftStats %>% 
   gt() %>% 
   tab_header(title = 'Potency Stats') %>% 
   fmt_scientific()
   
-potShiftStats
+potShiftStatsTbl
 ```
 
 The associated statistics, @tbl-potShiftStats, also shows that the expected ratio of 1 is not within the ratio limits.
